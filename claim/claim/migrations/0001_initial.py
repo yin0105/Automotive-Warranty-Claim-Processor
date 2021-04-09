@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
                 ('submission_type', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='claim.submissiontype', verbose_name='submission type')),
                 ('technician', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='claim.technician', verbose_name='technician name')),
             ],
-            options={
+            options={ 
                 'ordering': ['dealership', 'repair_order'],
             },
         ),
