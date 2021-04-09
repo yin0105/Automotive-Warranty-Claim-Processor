@@ -29,6 +29,19 @@ class SubmissionType(models.Model):
         return self.name
 
 
+class Status(models.Model):
+    name = models.CharField( help_text='Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.', 
+        max_length=30, verbose_name='status', validators=[validators.UnicodeUsernameValidator()], primary_key=True)
+    description = models.TextField(max_length=1000, help_text='Enter a brief description of the status')
+
+    # Metadata
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name        
+
+
 class Dealership(models.Model):
     name = models.CharField( help_text='Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.', 
         max_length=30, verbose_name='dealership name', validators=[validators.UnicodeUsernameValidator()], primary_key=True)

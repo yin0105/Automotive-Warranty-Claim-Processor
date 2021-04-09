@@ -9,20 +9,24 @@ from . import managers # we will write this file shortly
 
 
 class CustomUser(AbstractUser):
-    username = None
+    # username = None
+    username = models.CharField( max_length=30, null=True )
     email = models.EmailField(_('email address'), unique=True)
-    bio = models.TextField()
-    gender = models.CharField(
-        max_length=140,
+    # bio = models.TextField()
+    
+    # gender = models.CharField(
+    role = models.CharField(
+        max_length=30,
         null=True,
         choices=(
-            ('Male', 'Male'),
-            ('Female', 'Female'),
-            ('Other', 'Other')
+            ('super_admin', 'Super Admin'),
+            ('dealership_admin', 'Dealership Admin'),
+            ('dealership_user', 'Dealership Read-only User')
         )
     )
-    birth_date = models.DateField(null=True, blank=True)
-    pro = models.BooleanField(default=False)
+    dealership = models.CharField( max_length=30, null=True )
+    # birth_date = models.DateField(null=True, blank=True)
+    # pro = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

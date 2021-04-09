@@ -1,15 +1,17 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
-# from validate_email import validate_email
+from validate_email import validate_email
 
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
+        extra_fields.setdefault('role', 'dealership_user')
+
         if not email:
             raise ValueError(_('The Email must be set'))
         email = self.normalize_email(email)
-        # if not validate_email(email):
-        #     raise ValueError(_('Invalid email set'))
+        if not validate_email(email):
+            raise ValueError(_('Invalid email set'))
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
@@ -19,6 +21,8 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('role', 'super_admin')
+        extra_fields.setdefault('username', 'admin')
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('Superuser must have is_staff=True.'))
