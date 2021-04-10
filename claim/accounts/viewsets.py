@@ -12,6 +12,7 @@ class CustomUserModelViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
 
     def perform_create(self, serializer):
+        print("viewsets.py")
         instance = serializer.save()
         instance.set_password(instance.password)
         instance.save()

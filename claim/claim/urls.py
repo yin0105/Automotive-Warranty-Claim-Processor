@@ -19,9 +19,10 @@ from django.views import generic
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
+    path('api/accounts/', include('accounts.urls')),
+    path('api/claim/', include('api.urls')),
     # url(r'^auth/', include('djoser.urls')),
-    path('api/', include('djoser.urls')),
-    path('api/', include('djoser.urls.authtoken')),
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.authtoken')),
     # re_path(r'.*', generic.TemplateView.as_view(template_name='index.html')),
 ]

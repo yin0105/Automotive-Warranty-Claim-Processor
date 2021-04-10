@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'claim',
+    'api',
     'frontend',
     'accounts.apps.AccountsConfig',
 ]

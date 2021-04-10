@@ -24,7 +24,8 @@ class CustomUser(AbstractUser):
             ('dealership_user', 'Dealership Read-only User')
         )
     )
-    dealership = models.CharField( max_length=30, null=True )
+    # dealership = models.ForeignKey("api.Dealership", on_delete=models.CASCADE, verbose_name='dealership', null=True) 
+    dealership = models.ForeignKey("api.Dealership", to_field="name", on_delete=models.CASCADE, verbose_name='dealership', null=True)
     # birth_date = models.DateField(null=True, blank=True)
     # pro = models.BooleanField(default=False)
 
