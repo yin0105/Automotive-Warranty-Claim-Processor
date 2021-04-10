@@ -82,19 +82,22 @@ class LoginPage extends Component {
       return;
     }
 
+    console.log("email = " + email);
+    console.log("password = " + password);
+
     this.props.login(email, password)
       .catch(err => {
-        // console.log(err.response.data.non_field_errors[0]);
-        if (err.response.data.non_field_errors[0] === 'register') {
-          toastr.error('Login Failed!', 'Please register');
-          this.props.history.push('/register')
-        }else if (err.response.data.non_field_errors[0] === 'email') {
-          toastr.error('Login Failed!', 'Please verify your email address');
-          // this.props.history.push('/login/email_verification')
-        }else if (err.response.data.non_field_errors[0] === 'password') {
-          toastr.error('Login Failed!', 'Invalid password');
-          this.props.history.push('/login')
-        }
+        console.log(err.response.data);
+        // if (err.response.data.non_field_errors[0] === 'register') {
+        //   toastr.error('Login Failed!', 'Please register');
+        //   this.props.history.push('/register')
+        // }else if (err.response.data.non_field_errors[0] === 'email') {
+        //   toastr.error('Login Failed!', 'Please verify your email address');
+        //   // this.props.history.push('/login/email_verification')
+        // }else if (err.response.data.non_field_errors[0] === 'password') {
+        //   toastr.error('Login Failed!', 'Invalid password');
+        //   this.props.history.push('/login')
+        // }
       })
   };
 

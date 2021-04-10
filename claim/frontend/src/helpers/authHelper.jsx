@@ -3,7 +3,10 @@ import ApiHelper from './apiHelper.jsx';
 
 class AuthHelper {
   login = (email, password) => {
-    return ApiHelper.post('/api/auth/login', {email, password}, {}, false);
+    console.log(email);
+    console.log(password);
+    return ApiHelper.post('/api/auth/token/login/', {email, password}, {}, false);
+    // return ApiHelper.post('/api/auth/login', {email, password}, {}, false);
   };
 
   register = (firstName, lastName, email, password) => {

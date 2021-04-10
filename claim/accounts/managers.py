@@ -17,7 +17,7 @@ class CustomUserManager(BaseUserManager):
         user.save()
         print("#################")
         print(extra_fields["role"])
-        user_group = Group.objects.get(name="dealership_user") 
+        user_group = Group.objects.get(name=extra_fields["role"]) 
         user.groups.add(user_group)
         return user
 

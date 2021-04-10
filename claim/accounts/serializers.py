@@ -15,12 +15,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     role = serializers.CharField(required=True)
     dealership = serializers.CharField(required=False)
-    # birth_date = serializers.CharField(required=False)
-    # bio = serializers.CharField(required=False)
-    # gender = serializers.CharField(required=False)
-    # last_name = serializers.CharField(required=False)
-    # first_name = serializers.CharField(required=False)
-    # birth_date = serializers.CharField(required=False)
 
     class Meta:
         model = CustomUser

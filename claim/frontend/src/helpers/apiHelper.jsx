@@ -4,6 +4,27 @@ import {store} from '../redux/store.jsx';
 import {refreshToken} from '../redux/actions/auth.jsx';
 import NProgress from 'nprogress';
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+// axios.defaults.withCredentials = true
+// var csrftoken = getCookie('csrftoken');
+
+// function getCookie(name) {
+//   var cookieValue = null;
+//   if (document.cookie && document.cookie !== '') {
+//       var cookies = document.cookie.split(';');
+//       for (var i = 0; i < cookies.length; i++) {
+//           var cookie = jQuery.trim(cookies[i]);
+//           if (cookie.substring(0, name.length + 1) === (name + '=')) {
+//               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//               break;
+//           }
+//       }
+//   }
+//   return cookieValue;
+// }
+
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
   NProgress.start();

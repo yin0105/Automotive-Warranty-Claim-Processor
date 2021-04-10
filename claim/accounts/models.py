@@ -25,7 +25,7 @@ class CustomUser(AbstractUser):
         )
     )
     # dealership = models.ForeignKey("api.Dealership", on_delete=models.CASCADE, verbose_name='dealership', null=True) 
-    dealership = models.ForeignKey("api.Dealership", to_field="name", on_delete=models.CASCADE, verbose_name='dealership', null=True)
+    dealership = models.ForeignKey("api.Dealership", to_field="name", on_delete=models.CASCADE, verbose_name='dealership', null=True, blank=True)
     # birth_date = models.DateField(null=True, blank=True)
     # pro = models.BooleanField(default=False)
 
