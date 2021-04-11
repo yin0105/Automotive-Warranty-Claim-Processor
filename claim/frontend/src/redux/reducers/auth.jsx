@@ -40,6 +40,7 @@ export default (state = initialState, action) => {
     case auth.LOGOUT:
     case auth.REFRESH_TOKEN_FAILURE:
     case auth.GET_USER_INFO_FAILURE:
+    case auth.GET_BASIC_DATA_REQUEST:
       return initialState;
 
     case auth.GET_USER_INFO_SUCCESS:

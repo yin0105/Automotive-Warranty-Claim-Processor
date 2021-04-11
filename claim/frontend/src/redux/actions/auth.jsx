@@ -23,19 +23,16 @@ export const login = (username, password) => dispatch => {
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
-      console.log("redux->actions->auth.jsx->login-> success", res.data);
     }).catch(err => {
       dispatch({
         type: LOGIN_FAILURE,
       });
-      console.log("redux->actions->auth.jsx->login->failure :: " + err);
       throw(err);
       
     });
 };
 
 export const logout = () => {
-  console.log("logout::");
   return {
     type: LOGOUT
   }
@@ -58,7 +55,6 @@ export const refreshToken = () => (dispatch, getState) => {
 };
 
 export const getUserInfo = () => dispatch => {
-  console.log("getUserInfor(); ");
   dispatch({type: GET_USER_INFO_REQUEST});
   return AuthHelper.getUserInfo()
     .then(res => {
@@ -87,5 +83,56 @@ export const signup = (userInfo) => dispatch => {
         type: SIGNUP_FAILURE,
       });
       throw(err);
+    });
+};
+
+export const getBasicData = () => dispatch => {
+  dispatch({type: GET_BASIC_DATA_REQUEST});
+  AuthHelper.getClaimTypeList()
+    .then(res => {
+      dispatch({
+        type: GET_CLAIM_TYPE_LIST_SUCCESS,
+        payload: res.data
+      });
+    }).catch(err => {
+      dispatch({
+        type: GET_CLAIM_TYPE_LIST_FAILURE,
+      });
+    });
+
+AuthHelper.getSubmissionTypeList()
+    .then(res => {
+      dispatch({
+        type: GET_SUBMISSION_TYPE_LIST_SUCCESS,
+        payload: res.data
+      });
+    }).catch(err => {
+      dispatch({
+        type: GET_SUBMISSION_TYPE_LIST_FAILURE,
+      });
+    });
+
+  AuthHelper.getServiceAdvisorList()
+    .then(res => {
+      dispatch({
+        type: GET_SERVICE_ADVISOR_LIST_SUCCESS,
+        payload: res.data
+      });
+    }).catch(err => {
+      dispatch({
+        type: GET_SERVICE_ADVISOR_LIST_FAILURE,
+      });
+    });
+
+  AuthHelper.getTechnicianList()
+    .then(res => {
+      dispatch({
+        type: GET_TECHNICIAN_LIST_SUCCESS,
+        payload: res.data
+      });
+    }).catch(err => {
+      dispatch({
+        type: GET_TECHNICIAN_LIST_FAILURE,
+      });
     });
 };

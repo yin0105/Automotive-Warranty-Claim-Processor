@@ -39,7 +39,7 @@ class RepairOrderList extends Component {
       <div className="main-content">
         <Container fluid>
           <div className="d-flex">
-            <FormLabel className="mx-auto h1 "><b>Collection List</b></FormLabel>
+            <FormLabel className="mx-auto h1 "><b>Repair Order List</b></FormLabel>
           </div>
           <Row>
             <Col md={{ span: 6, offset: 3 }} sm={{ span: 8, offset: 2 }}>
@@ -76,7 +76,7 @@ class RepairOrderList extends Component {
                 }
                 legend={
                   <div class="d-flex">
-                    <Link to="/frontend/admin/upload_pdf" className="mx-auto btn btn-primary btn-fill">
+                    <Link to="/frontend/dealership/upload_pdf" className="mx-auto btn btn-primary btn-fill">
                       Add Repair Order
                     </Link>
                   </div>

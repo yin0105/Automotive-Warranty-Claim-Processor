@@ -16,7 +16,7 @@ import { Link, Redirect } from 'react-router-dom';
 import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
-import { login, getUserInfo } from 'redux/actions/auth.jsx';
+import { login, getUserInfo, get_basic_data } from 'redux/actions/auth.jsx';
 import {connect} from "react-redux";
 import AuthHelper from 'helpers/authHelper.jsx';
 import {validateEmail} from 'helpers/commonHelper.jsx';
@@ -39,6 +39,17 @@ class LoginPage extends Component {
       }.bind(this),
       700
     );
+    this.props.get_basic_data()
+      .then(
+        () => {
+          console.log("######## get_basic_data() :: Success");
+        }
+      ).catch(
+        err => {
+          console.log("Get Basic Data Error");
+        }
+
+      );
   }
 
   handleLogin = e => {
@@ -87,16 +98,6 @@ class LoginPage extends Component {
       ).catch(err => {
         console.log("Login Error:::");
         console.log(err.response);
-        // if (err.response.data.non_field_errors[0] === 'register') {
-        //   toastr.error('Login Failed!', 'Please register');
-        //   this.props.history.push('/register')
-        // }else if (err.response.data.non_field_errors[0] === 'email') {
-        //   toastr.error('Login Failed!', 'Please verify your email address');
-        //   // this.props.history.push('/login/email_verification')
-        // }else if (err.response.data.non_field_errors[0] === 'password') {
-        //   toastr.error('Login Failed!', 'Invalid password');
-        //   this.props.history.push('/login')
-        // }
       });
 
     
@@ -173,6 +174,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
   login: (username, password) => dispatch(login(username, password)),
   get_userinfo: () => dispatch(getUserInfo()),
+  get_basic_data: () => dispatch(getBasicData()),
 });
 
 
