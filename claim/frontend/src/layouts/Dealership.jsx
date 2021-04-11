@@ -142,7 +142,7 @@ class Dashboard extends Component {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      if (prop.layout === "/frontend/admin") {
+      if (prop.layout === "/frontend/dealership") {
         return (
           <Route
             path={prop.layout + prop.path}

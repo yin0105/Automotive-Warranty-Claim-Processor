@@ -62,13 +62,13 @@ var routes = [
     name: "Dashboard",
     icon: "pe-7s-graph",
     category: ["dealership",],
-    component: ScheduleList
+    component: ScheduleStatus
   },
 
   {
     path: "/upload_pdf",
     layout: "/frontend/dealership",
-    name: "Upload PDF",
+    name: "Upload Repair Order",
     icon: "pe-7s-note2",
     category: ["dealership",],
     component: AddCollection
