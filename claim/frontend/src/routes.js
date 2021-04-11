@@ -53,83 +53,81 @@ var routes = [
     layout: "/frontend/admin",
     name: "Dashboard",
     icon: "pe-7s-graph",
+    category: ["admin",],
     component: ScheduleStatus
-  },
+  },  
   {
-    path: "/collection_list",
-    layout: "/frontend/admin",
-    name: "Collection",
-    icon: "pe-7s-plugin",
-    component: CollectionList
-  },
-  {
-    path: "/schedule_list",
-    layout: "/frontend/admin",
-    name: "Schedule",
-    icon: "pe-7s-note2",
+    path: "/dashboard",
+    layout: "/frontend/dealership",
+    name: "Dashboard",
+    icon: "pe-7s-graph",
+    category: ["dealership",],
     component: ScheduleList
   },
 
   {
-    path: "/add_collection",
-    layout: "/frontend/admin",
-    name: "Add Collection",
-    mini: "AC",
-    redirect: true,
+    path: "/upload_pdf",
+    layout: "/frontend/dealership",
+    name: "Upload PDF",
+    icon: "pe-7s-note2",
+    category: ["dealership",],
     component: AddCollection
   },
 
-  {
-    path: "/add_schedule",
-    layout: "/frontend/admin",
-    name: "Add Schedule",
-    mini: "AS",
-    redirect: true,
-    component: AddSchedule
-  },
-  {
-    path: "/charts",
-    layout: "/frontend/admin",
-    name: "Users",
-    icon: "pe-7s-users",
-    component: Charts
-  },
+  // {
+  //   path: "/add_schedule",
+  //   layout: "/frontend/admin",
+  //   name: "Add Schedule",
+  //   mini: "AS",
+  //   redirect: true,
+  //   component: AddSchedule
+  // },
+  // {
+  //   path: "/charts",
+  //   layout: "/frontend/admin",
+  //   name: "Users",
+  //   icon: "pe-7s-users",
+  //   component: Charts
+  // },
   {
     path: "/login-page",
     layout: "/frontend/auth",
     name: "Login",
     icon: "pe-7s-users",
+    category: [],
     component: LoginPage
   },
   {
     path: "/logout-page",
     layout: "/frontend/auth",
     name: "Log out",
-    icon: "pe-7s-users",
+    icon: "pe-7s-next-2",
+    category: ["admin", "dealership",],
     component: LogoutPage
   },
-  {
-    path: "/register-page",
-    layout: "/frontend/auth",
-    name: "Register",
-    icon: "pe-7s-date",
-    component: RegisterPage
-  },
-  {
-    path: "/home",
-    layout: "/frontend/user",
-    name: "ScheduleListUser",
-    icon: "pe-7s-date",
-    redirect: true,
-    component: ScheduleListUser
-  },
-  {
-    path: "/collection_page",
-    layout: "/frontend/user",
-    name: "CollectionPage",
-    icon: "pe-7s-date",
-    redirect: true,
-    component: CollectionPage
-  },
+  
+  // {
+  //   path: "/register-page",
+  //   layout: "/frontend/auth",
+  //   name: "Register",
+  //   icon: "pe-7s-date",
+  //   component: RegisterPage
+  // },
+  // {
+  //   path: "/home",
+  //   layout: "/frontend/user",
+  //   name: "ScheduleListUser",
+  //   icon: "pe-7s-date",
+  //   redirect: true,
+  //   component: ScheduleListUser
+  // },
+  // {
+  //   path: "/collection_page",
+  //   layout: "/frontend/user",
+  //   name: "CollectionPage",
+  //   icon: "pe-7s-date",
+  //   redirect: true,
+  //   component: CollectionPage
+  // },
 ];
 export default routes;

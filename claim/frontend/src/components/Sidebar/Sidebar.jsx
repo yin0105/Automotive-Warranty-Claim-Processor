@@ -74,8 +74,13 @@ class Sidebar extends Component {
   }
   // this function creates the links and collapses that appear in the sidebar (left menu)
   createLinks = routes => {
+    // const category = this.state.path.split("/")[1];
+    // console.log("category => ", category);
     return routes.map((prop, key) => {
-      if (prop.redirect) {
+      console.log("this.props.category => ", this.props.category);
+      console.log("prop.category =>", prop.category);
+      if (!prop.category.includes(this.props.category)) {
+        console.log(prop.path);
         return null;
       }
       if (prop.collapse) {

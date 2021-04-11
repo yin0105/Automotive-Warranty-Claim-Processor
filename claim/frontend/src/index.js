@@ -25,6 +25,7 @@ import "assets/css/pe-icon-7-stroke.css";
 
 import AuthLayout from "layouts/Auth.jsx";
 import AdminLayout from "layouts/Admin.jsx";
+import DealershipLayout from "layouts/Dealership.jsx";
 import UserLayout from "layouts/User.jsx";
 
 import { ConnectedRouter  } from 'connected-react-router'
@@ -43,8 +44,9 @@ ReactDOM.render(
           <Switch>
             <Route path="/frontend/auth" render={props => <AuthLayout {...props} />} />
             <Route path="/frontend/admin" render={props => <AdminLayout {...props} />} />
+            <Route path="/frontend/dealership" render={props => <DealershipLayout {...props} />} />
             <Route path="/frontend/user" render={props => <UserLayout {...props} />} />
-            <Redirect from="/" to="/frontend/admin/dashboard" />
+            <Redirect from="/" to="/frontend/auth/login-page" />
           </Switch>
           <ReduxToastr timeOut={3000} transitionIn="fadeIn" transitionOut="fadeOut"/>
         </React.Fragment>

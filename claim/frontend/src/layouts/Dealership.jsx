@@ -33,7 +33,7 @@ import { style } from "variables/Variables.jsx";
 
 var ps;
 
-class DealershipDashboard extends Component {
+class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -170,7 +170,7 @@ class DealershipDashboard extends Component {
           color={this.state.color}
           hasImage={this.state.hasImage}
           mini={this.state.mini}
-          category="admin"
+          category="dealership"
         />
         <div
           className={
@@ -206,4 +206,4 @@ class DealershipDashboard extends Component {
   }
 }
 
-export default DealershipDashboard;
+export default Dashboard;

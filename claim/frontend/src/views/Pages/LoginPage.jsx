@@ -134,7 +134,7 @@ class LoginPage extends Component {
         );
       } else {
         return (
-          <Redirect to='/frontend/admin/schedule_list'/>
+          <Redirect to='/frontend/dealership/dashboard'/>
         )
       }
     } else {
