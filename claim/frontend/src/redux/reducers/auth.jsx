@@ -8,18 +8,22 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  console.log("redux > reducers > auth");
+  console.log("state => ", state);
+  console.log("action => ", action);
+
   switch (action.type) {
     case auth.LOGIN_SUCCESS:
     case auth.REFRESH_TOKEN_SUCCESS:
       return {
         ...state,
         access: {
-          token: action.payload.access,
-          ...jwtDecode(action.payload.access)
+          token: action.payload.auth_token,
+          // ...jwtDecode(action.payload.auth_token)
         },
         refresh: {
           token: action.payload.refresh,
-          ...jwtDecode(action.payload.refresh)
+          // ...jwtDecode(action.payload.refresh)
         },
         isFetching: false,
       };

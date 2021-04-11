@@ -23,11 +23,14 @@ export const login = (username, password) => dispatch => {
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
+      console.log("redux->actions->auth.jsx->login-> success", res.data);
     }).catch(err => {
       dispatch({
         type: LOGIN_FAILURE,
       });
+      console.log("redux->actions->auth.jsx->login->failure :: " + err);
       throw(err);
+      
     });
 };
 

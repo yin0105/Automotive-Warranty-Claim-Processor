@@ -49,7 +49,7 @@ axios.interceptors.response.use(function (response) {
 const withAuth = (headers = {}) => {
   return {
     ...headers,
-    'Authorization': 'Bearer ' + AuthHelper.getAccessToken(),
+    'Authorization': 'token ' + AuthHelper.getAccessToken(),
   }
 };
 
@@ -57,6 +57,7 @@ const base = (method, url, data = {}, headers = {}, secure = true) => {
   if (secure) {
     let state = store.getState();
     if (AuthHelper.isAccessTokenExpired(state.auth)) {
+      console.log("if (AuthHelper.isAccessTokenExpired(state.auth)) {");
       return store.dispatch(refreshToken())
         .then(res => {
           return axios({
@@ -67,6 +68,7 @@ const base = (method, url, data = {}, headers = {}, secure = true) => {
           });
         })
     } else {
+      console.log("else");
       return axios({
         method,
         url,
@@ -75,12 +77,21 @@ const base = (method, url, data = {}, headers = {}, secure = true) => {
       });
     }
   } else {
-    return axios({
+    console.log("secure else");
+    var aa = axios({
       method,
       url,
       data,
       headers,
     });
+    console.log(aa);
+    return aa;
+    // return axios({
+    //   method,
+    //   url,
+    //   data,
+    //   headers,
+    // });
   }
 };
 

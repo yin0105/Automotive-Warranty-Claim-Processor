@@ -5,23 +5,29 @@ class AuthHelper {
   login = (email, password) => {
     console.log(email);
     console.log(password);
-    return ApiHelper.post('/api/auth/token/login/', {email, password}, {}, false);
-    // return ApiHelper.post('/api/auth/login', {email, password}, {}, false);
+    var aa = ApiHelper.post('/api/auth/token/login/', {email, password}, {}, false);
+    console.log('res in AuthHelper', aa);
+    return aa;
+    // return ApiHelper.post('/api/auth/token/login', {email, password}, {}, false);
   };
 
   register = (firstName, lastName, email, password) => {
+    console.log("register");
     return ApiHelper.post('/api/auth/register', {firstName, lastName, email, password}, {}, false);
   };
 
   refreshToken = data => {
+    console.log("refreshToken");
     return ApiHelper.post('/api/auth/token/refresh', data, {}, false);
   };
 
   getUserInfo = () => {
+    console.log("getUserInfo");
     return ApiHelper.get('/api/auth/user');
   };
 
   getAccessToken = () => {
+    console.log("getAccessToken");
     let state = store.getState();
     if (state.auth.access) {
       return state.auth.access.token;
@@ -30,6 +36,7 @@ class AuthHelper {
   };
 
   getRefreshToken = () => {
+    console.log("getRefreshToken");
     let state = store.getState();
     if (state.auth.refresh) {
       return state.auth.refresh.token;
@@ -38,6 +45,7 @@ class AuthHelper {
   };
 
   isAccessTokenExpired = state => {
+    console.log("isAccessTokenExpired");
     if (state.access && state.access.exp) {
       return 1000 * state.access.exp - (new Date()).getTime() < 5000;
     }
@@ -45,17 +53,27 @@ class AuthHelper {
   };
 
   isRefreshTokenExpired = state => {
-    if (state.refresh && state.refresh.exp) {
-      return 1000 * state.refresh.exp - (new Date()).getTime() < 5000;
+    console.log("isRefreshTokenExpired");
+    try{
+      if (state.refresh && state.refresh.exp) {
+        return 1000 * state.refresh.exp - (new Date()).getTime() < 5000;
+      }
+      console.log("OK ?");
+    } catch {
+      console.log("isrefreshtoken Error");
     }
     return true;
   };
 
   isAuthenticated = state => {
+    console.log("isAuthenticated = state =>");
+    console.log("state => ", state);
     return !this.isRefreshTokenExpired(state);
+    // return true;
   };
 
   updateProfile = profile => {
+    console.log("updateProfile");
     return ApiHelper.put('/api/auth/user', profile);
   }
 
