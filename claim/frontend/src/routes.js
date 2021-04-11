@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard PRO React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import Dashboard from "views/Dashboard.jsx";
 import Buttons from "views/Components/Buttons.jsx";
 import GridSystem from "views/Components/GridSystem.jsx";
@@ -39,13 +23,13 @@ import LoginPage from "views/Pages/LoginPage.jsx";
 import LogoutPage from "views/Pages/LogoutPage.jsx";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
 import LockScreenPage from "views/Pages/LockScreenPage.jsx";
-import CollectionList from "views/Collections/CollectionList";
-import AddCollection from "views/Collections/AddCollection";
 import ScheduleList from "views/Schedules/ScheduleList";
-import AddSchedule from "views/Schedules/AddSchedule"
+import AddSchedule from "views/Schedules/AddSchedule";
 import ScheduleStatus from "views/Schedules/ScheduleStatus";
 import ScheduleListUser from "views/Schedules/ScheduleListUser"
-import CollectionPage from "views/Collections/CollectionPage"
+
+import RepairOrderList from "views/RepairOrders/RepairOrderList";
+import AddRepairOrder from "views/RepairOrders/AddRepairOrder";
 
 var routes = [
   {
@@ -66,12 +50,20 @@ var routes = [
   },
 
   {
-    path: "/upload_pdf",
+    path: "/repair_order",
     layout: "/frontend/dealership",
     name: "Upload Repair Order",
     icon: "pe-7s-note2",
     category: ["dealership",],
-    component: AddCollection
+    component: RepairOrderList
+  },
+  {
+    path: "/upload_pdf",
+    layout: "/frontend/dealership",
+    name: "Upload Repair Order",
+    icon: "pe-7s-note2",
+    category: [],
+    component: AddRepairOrder
   },
 
   // {

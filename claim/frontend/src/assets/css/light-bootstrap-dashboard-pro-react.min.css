@@ -1,19 +1,4 @@
-﻿/*!
-
-=========================================================
-* Light Bootstrap Dashboard PRO React - v1.2.0 (LBD V1.3.0)
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@-webkit-keyframes spin{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}@-moz-keyframes spin{from{-moz-transform:rotate(0deg)}to{-moz-transform:rotate(360deg)}}@-ms-keyframes spin{from{-ms-transform:rotate(0deg)}to{-ms-transform:rotate(360deg)}}/*!
+﻿@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@-webkit-keyframes spin{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}@-moz-keyframes spin{from{-moz-transform:rotate(0deg)}to{-moz-transform:rotate(360deg)}}@-ms-keyframes spin{from{-ms-transform:rotate(0deg)}to{-ms-transform:rotate(360deg)}}/*!
 Animate.css - http://daneden.me/animate
 Licensed under the MIT license - http://opensource.org/licenses/MIT
 
