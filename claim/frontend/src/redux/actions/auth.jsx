@@ -23,6 +23,9 @@ export const login = (username, password) => dispatch => {
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
+      console.log("!!!!!!!!!!");
+      getUserInfo();
+      console.log("############");
       console.log("redux->actions->auth.jsx->login-> success", res.data);
     }).catch(err => {
       dispatch({
@@ -57,6 +60,7 @@ export const refreshToken = () => (dispatch, getState) => {
 };
 
 export const getUserInfo = () => dispatch => {
+  console.log("getUserInfor(); ");
   dispatch({type: GET_USER_INFO_REQUEST});
   return AuthHelper.getUserInfo()
     .then(res => {
@@ -85,5 +89,24 @@ export const signup = (userInfo) => dispatch => {
         type: SIGNUP_FAILURE,
       });
       throw(err);
+    });
+};
+
+const fetch_userinfo = (username, password) => dispatch => {
+  dispatch({type: LOGIN_REQUEST});
+  return AuthHelper.login(username, password)
+    .then(res => {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
+      console.log("redux->actions->auth.jsx->login-> success", res.data);
+    }).catch(err => {
+      dispatch({
+        type: LOGIN_FAILURE,
+      });
+      console.log("redux->actions->auth.jsx->login->failure :: " + err);
+      throw(err);
+      
     });
 };

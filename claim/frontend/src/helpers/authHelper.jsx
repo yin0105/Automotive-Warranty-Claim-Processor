@@ -23,7 +23,7 @@ class AuthHelper {
 
   getUserInfo = () => {
     console.log("getUserInfo");
-    return ApiHelper.get('/api/auth/user');
+    return ApiHelper.get('/api/accounts/data/');
   };
 
   getAccessToken = () => {
@@ -65,11 +65,28 @@ class AuthHelper {
     return true;
   };
 
-  isAuthenticated = state => {
+  isAuthenticated = () => {
+    let state = store.getState();
     console.log("isAuthenticated = state =>");
     console.log("state => ", state);
-    return !this.isRefreshTokenExpired(state);
-    // return true;
+    // return !this.isRefreshTokenExpired(state);
+    if (state && state.auth && state.auth.user) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  isSuperAdmin = () => {
+    let state = store.getState();
+    console.log("isSuperAdmin = state =>");
+    console.log("state => ", state);
+    // return !this.isRefreshTokenExpired(state);
+    if (state && state.auth && state.auth.user && state.auth.user.role == "super_admin") {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   updateProfile = profile => {

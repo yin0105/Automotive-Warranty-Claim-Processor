@@ -56,19 +56,19 @@ const withAuth = (headers = {}) => {
 const base = (method, url, data = {}, headers = {}, secure = true) => {
   if (secure) {
     let state = store.getState();
-    if (AuthHelper.isAccessTokenExpired(state.auth)) {
-      console.log("if (AuthHelper.isAccessTokenExpired(state.auth)) {");
-      return store.dispatch(refreshToken())
-        .then(res => {
-          return axios({
-            method,
-            url,
-            data,
-            headers: withAuth(headers),
-          });
-        })
-    } else {
-      console.log("else");
+    // if (AuthHelper.isAccessTokenExpired(state.auth)) {
+    //   console.log("if (AuthHelper.isAccessTokenExpired(state.auth)) {");
+    //   return store.dispatch(refreshToken())
+    //     .then(res => {
+    //       return axios({
+    //         method,
+    //         url,
+    //         data,
+    //         headers: withAuth(headers),
+    //       });
+    //     })
+    // } else {
+    //   console.log("else");
       return axios({
         method,
         url,
@@ -76,7 +76,7 @@ const base = (method, url, data = {}, headers = {}, secure = true) => {
         headers: withAuth(headers),
       });
     }
-  } else {
+  // } else {
     console.log("secure else");
     var aa = axios({
       method,
@@ -92,7 +92,7 @@ const base = (method, url, data = {}, headers = {}, secure = true) => {
     //   data,
     //   headers,
     // });
-  }
+  // }
 };
 
 const ApiHelper = {};

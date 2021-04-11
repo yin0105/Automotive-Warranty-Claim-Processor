@@ -26,11 +26,12 @@ import {
   Form,
 } from "react-bootstrap";
 import { FormFeedback } from "reactstrap";
-import { Link } from "react-router-dom"
+import { Link, Redirect } from 'react-router-dom';
+
 import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
-import {login} from 'redux/actions/auth.jsx';
+import { login, getUserInfo } from 'redux/actions/auth.jsx';
 import {connect} from "react-redux";
 import AuthHelper from 'helpers/authHelper.jsx';
 import {validateEmail} from 'helpers/commonHelper.jsx';
@@ -82,11 +83,23 @@ class LoginPage extends Component {
       return;
     }
 
-    console.log("email = " + email);
-    console.log("password = " + password);
 
     this.props.login(email, password)
-      .catch(err => {
+      .then(
+        () => {
+          this.props.get_userinfo()
+            .then(
+              () => {
+                console.log("######## get_userinfo() :: Success");
+              }
+            ).catch(
+              err => {
+                console.log("Get UserInfo Error");
+              }
+
+            );
+        }
+      ).catch(err => {
         console.log("Login Error:::");
         console.log(err.response);
         // if (err.response.data.non_field_errors[0] === 'register') {
@@ -99,7 +112,9 @@ class LoginPage extends Component {
         //   toastr.error('Login Failed!', 'Invalid password');
         //   this.props.history.push('/login')
         // }
-      })
+      });
+
+    
   };
 
   handleChangeInput = e => {
@@ -113,9 +128,15 @@ class LoginPage extends Component {
   
   render() {
     if (this.props.isAuthenticated) {
-      return (
-        <Redirect to='/auth/register'/>
-      )
+      if (this.props.isSuperAdmin) {
+        return (
+          <Redirect to='/frontend/admin/dashboard'/>
+        );
+      } else {
+        return (
+          <Redirect to='/frontend/admin/schedule_list'/>
+        )
+      }
     } else {
       let {errors} = this.state;
       return (
@@ -160,11 +181,15 @@ class LoginPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: AuthHelper.isAuthenticated(state.auth)
+  isAuthenticated: AuthHelper.isAuthenticated(),
+  isSuperAdmin: AuthHelper.isSuperAdmin()
 });
 
 const mapDispatchToProps = (dispatch) => ({
   login: (username, password) => dispatch(login(username, password)),
+  get_userinfo: () => dispatch(getUserInfo()),
 });
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
