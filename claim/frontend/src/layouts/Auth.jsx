@@ -29,7 +29,7 @@ import bgImage from "assets/img/pexels-lumn-295771.jpg";
 
 
 class Pages extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (document.documentElement.className.indexOf("nav-open") !== -1) {
       document.documentElement.classList.toggle("nav-open");
     }

@@ -36,6 +36,7 @@ import Charts from "views/Charts.jsx";
 import Calendar from "views/Calendar.jsx";
 import UserPage from "views/Pages/UserPage.jsx";
 import LoginPage from "views/Pages/LoginPage.jsx";
+import LogoutPage from "views/Pages/LogoutPage.jsx";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
 import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 import CollectionList from "views/Collections/CollectionList";
@@ -86,54 +87,6 @@ var routes = [
     redirect: true,
     component: AddSchedule
   },
-
-  // {
-  //   collapse: true,
-  //   path: "/components",
-  //   name: "Collections",
-  //   state: "openComponents",
-  //   icon: "pe-7s-plugin",
-  //   views: [
-  //     {
-  //       path: "/add_collection",
-  //       layout: "/admin",
-  //       name: "Add Collection",
-  //       mini: "B",
-  //       redirect: true,
-  //       component: AddCollection
-  //     },
-  //     {
-  //       path: "/collection_list",
-  //       layout: "/admin",
-  //       name: "Collection List",
-  //       mini: "GS",
-  //       component: CollectionList
-  //     },
-  //   ]
-  // },
-  // {
-  //   collapse: true,
-  //   path: "/forms",
-  //   name: "Schedules",
-  //   state: "openForms",
-  //   icon: "pe-7s-note2",
-  //   views: [
-  //     {
-  //       path: "/regular-forms",
-  //       layout: "/admin",
-  //       name: "Add Schedule",
-  //       mini: "RF",
-  //       component: RegularForms
-  //     },
-  //     {
-  //       path: "/schedule_list",
-  //       layout: "/admin",
-  //       name: "Schedule List",
-  //       mini: "EF",
-  //       component: ScheduleList
-  //     },
-  //   ]
-  // },
   {
     path: "/charts",
     layout: "/frontend/admin",
@@ -147,6 +100,13 @@ var routes = [
     name: "Login",
     icon: "pe-7s-users",
     component: LoginPage
+  },
+  {
+    path: "/logout-page",
+    layout: "/frontend/auth",
+    name: "Log out",
+    icon: "pe-7s-users",
+    component: LogoutPage
   },
   {
     path: "/register-page",

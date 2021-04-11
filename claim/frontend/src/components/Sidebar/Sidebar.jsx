@@ -160,7 +160,7 @@ class Sidebar extends Component {
       });
     }
   }
-  componentWillUnmount() {
+  UNSAFE_componentWillUnmount() {
     // we need to destroy the false scrollbar when we navigate
     // to a page that doesn't have this component rendered
     if (navigator.platform.indexOf("Win") > -1) {

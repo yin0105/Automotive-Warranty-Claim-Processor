@@ -52,7 +52,7 @@ class Dashboard extends Component {
       ps = new PerfectScrollbar(this.refs.mainPanel);
     }
   }
-  componentWillUnmount() {
+  UNSAFE_componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
     }
@@ -76,7 +76,7 @@ class Dashboard extends Component {
       document.documentElement.classList.toggle("nav-open");
     }
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (document.documentElement.className.indexOf("nav-open") !== -1) {
       document.documentElement.classList.toggle("nav-open");
     }
