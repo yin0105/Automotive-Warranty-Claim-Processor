@@ -1,5 +1,5 @@
 
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   Container,
   Row,
@@ -8,90 +8,19 @@ import {
   FormControl,
   Form,
 } from "react-bootstrap";
-
-
+import axios from 'axios';
 import Button from "components/CustomButton/CustomButton.jsx";
 import Select from 'react-select'
-import { useSelector } from 'react-redux'
 import {connect} from "react-redux"
+import FileUpload from "views/Components/FileUpload"
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
+// const options = [
+//     { value: 'chocolate', label: 'Chocolate' },
+//     { value: 'strawberry', label: 'Strawberry' },
+//     { value: 'vanilla', label: 'Vanilla' }
+//   ]
 
-
-// export const SelectClaimType = () => {
-//     const old_options = useSelector(state => state.auth.claim_types.claim_types)
-//     let new_options = []
-//     for (const i in old_options) {
-//         let option = {}
-//         option["value"] = old_options[i].name
-//         option["label"] = old_options[i].name
-//         new_options.push(option)
-//     };
-
-//     // handleClaimTypeChange = (e) => {
-//     //   this.setState({claim_type: e.value})
-//     //   console.log("claim_type", this.state.claim_type)
-//     // }
-//     // onChange={e => {
-//     //   console.log("changed", e.target.value);
-
-   
-//     return <Select options={new_options} />
-// }
-
-// export const SelectSubmissionType = () => {
-//     const old_options = useSelector(state => state.auth.submission_types.submission_types)
-//     let new_options = []
-//     for (const i in old_options) {
-//         let option = {}
-//         option["value"] = old_options[i].name
-//         option["label"] = old_options[i].name
-//         new_options.push(option)
-//     }
-//     return <Select options={new_options} />
-// }
-
-// export const SubmissionTypes = () => {
-//   const old_options = useSelector(state => state.auth.submission_types.submission_types)
-//   const new_options = old_options.map(d => ({
-//     "value" : d.name,
-//     "label" : d.name
-//   }))
-
-//   return <Select options={new_options} onChange={(value) => {
-//     console.log("########## ok", value);
-//   }} />
-// }
-
-// export const SelectServiceAdvisor = () => {
-//     const old_options = useSelector(state => state.auth.service_advisors.service_advisor)
-//     let new_options = []
-//     for (const i in old_options) {
-//         let option = {}
-//         option["value"] = old_options[i].id
-//         option["label"] = old_options[i].name
-//         new_options.push(option)
-//     }
-//     return <Select options={new_options} />
-// }
-
-// export const SelectTechnician = () => {
-//     const old_options = useSelector(state => state.auth.technicians.technicians)
-//     let new_options = []
-//     for (const i in old_options) {
-//         let option = {}
-//         option["value"] = old_options[i].id
-//         option["label"] = old_options[i].name
-//         new_options.push(option)
-//     }
-//     return <Select options={new_options} />
-// }
-
-class AddRepairOrder extends Component {
+class AddRepairOrder extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -102,6 +31,10 @@ class AddRepairOrder extends Component {
       submission_type: [],
       service_advisor: [],
       technician: [],
+      selectedFile: null,
+      newUserInfo: {
+        profileImages: []
+      }
     }
   }
 
@@ -127,40 +60,6 @@ class AddRepairOrder extends Component {
     this.setState({ technician });
   }
 
-  // componentDidMount() {
-  //   this.getOptions()
-  // }
-
-  // async getOptions() {
-  //   const old_options = await useSelector(state => state.auth.submission_types.submission_types)
-
-  //   const options = old_options.map(d => ({
-  //     "value" : d.name,
-  //     "label" : d.name
-  //   }))
-  //   this.setState({claim_type_list: options})
-  // }
-
-  // handleClaimTypeChange(e){
-  //   this.setState({claim_type: e.value})
-  //   console.log("claim_type", this.state.claim_type)
-  // }
-
-  // handleSubmissionTypeChange(e){
-  //   this.setState({"submission_type": e.value})
-  // }
-
-  // handleSubmissionTypeChange(e){
-  //   this.setState({"submission_type": e.value})
-  // }
-
-  // handleSubmissionTypeChange(e){
-  //   this.setState({"submission_type": e.value})
-  // }
-
-
-  
-  
   handleUpload = e => {
     e.preventDefault();
 
@@ -168,49 +67,28 @@ class AddRepairOrder extends Component {
     console.log("submission_type: ", this.state.submission_type)
     console.log("service_advisor: ", this.state.service_advisor)
     console.log("technician: ", this.state.technician)
-
-    // let email = e.target.elements.email.value;
-    // let password = e.target.elements.password.value;
-    // let errors = this.state.errors;
-    // const queryString = require('query-string');
-    // let parsed = queryString.parse(this.props.location.search);
-
-    // if (email === '') {
-    //   errors.email = 'Email is required';
-    //   this.setState({errors});
-    //   return;
-    // }
-
-    // if (!validateEmail(email)) {
-    //   errors.email = 'Email is invalid.';
-    //   this.setState({errors});
-    //   return;
-    // }
-
-    // if (password === '') {
-    //   errors.password = 'Password is required';
-    //   this.setState({errors});
-    //   return;
-    // }
-
-    // this.props.login(email, password)
-    //   .catch(err => {
-    //     // console.log(err.response.data.non_field_errors[0]);
-    //     if (err.response.data.non_field_errors[0] === 'register') {
-    //       toastr.error('Login Failed!', 'Please register');
-    //       this.props.history.push('/register')
-    //     }else if (err.response.data.non_field_errors[0] === 'email') {
-    //       toastr.error('Login Failed!', 'Please verify your email address');
-    //       // this.props.history.push('/login/email_verification')
-    //     }else if (err.response.data.non_field_errors[0] === 'password') {
-    //       toastr.error('Login Failed!', 'Invalid password');
-    //       this.props.history.push('/login')
-    //     }
-    //   })
+    console.log("file upload =", this.state.newUserInfo.profileImages[0].name)
   };
+
+  updateUploadedFiles = (files) => {
+    this.setState({
+      newUserInfo: {
+        ...this.state.newUserInfo,
+        profileImages: files
+      }
+    })
+  }
+  
+  // handleSubmit = (event) => {
+  //     event.preventDefault();
+  //     //logic to create new user...
+  //   };
+
+  
 
   render() {
     const { claim_type, submission_type, service_advisor, technician } = this.state;
+
     return (
       <div className="main-content">
         <Container fluid className="repair_order">
@@ -260,6 +138,18 @@ class AddRepairOrder extends Component {
                             <Select options={this.props.technicians} value={technician} onChange={this.handleTechnicianChange}/>
                         </Col>
                     </Row>
+                    <Row>
+                        <Col md={{ span:5 }} className="text-right">
+                            <FormLabel>Claim PDF : </FormLabel>
+                        </Col>
+                        <Col md={{ span:7 }}>
+                          <FileUpload
+                            accept=".pdf"
+                            // multiple
+                            updateFilesCb={this.updateUploadedFiles}
+                          />
+                        </Col>
+                    </Row>
                     <Row className="mt-5">
                         <Col md={{ span: 3, offset: 3}} className="align-items-center d-flex justify-content-center">
                             <Button variant="warning" className="btn-fill" type="reset">Cancel</Button>
@@ -296,5 +186,4 @@ const mapStateToProps = state => ({
   })),
 });
 
-// export default AddRepairOrder;
 export default connect(mapStateToProps)(AddRepairOrder);
