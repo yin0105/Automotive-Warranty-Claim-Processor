@@ -2,14 +2,15 @@ from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
-from .serializers import ClaimTypeSerializer, SubmissionTypeSerializer, ServiceAdvisorSerializer, TechnicianSerializer
-from .models import ClaimType, SubmissionType, ServiceAdvisor, Technician
+from .serializers import ClaimTypeSerializer, SubmissionTypeSerializer, ServiceAdvisorSerializer, TechnicianSerializer, ClaimSerializer
+from .models import ClaimType, Dealership, SubmissionType, ServiceAdvisor, Technician, Claim
 from rest_framework import status
 import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import Permission
 from django.shortcuts import get_object_or_404
 from accounts.models import CustomUser
+from datetime import datetime
 
 
 # @api_view(["GET"])
@@ -81,6 +82,66 @@ def get_technicians(request):
     return JsonResponse({'technicians': serializer.data}, safe=False, status=status.HTTP_200_OK)         
 
 
+@api_view(["POST"])
+@csrf_exempt
+# @permission_classes([IsAuthenticated])
+def add_claim(request):
+    try:
+        dealership = Claim.objects.create(
+            repair_order=request.POST["repair_order"],
+            pdf=request.POST["pdf"],
+            dealership = Dealership.objects.filter(name=request.POST["dealership"]).first(),
+            claim_type = ClaimType.objects.filter(name=request.POST["claim_type"]).first(),
+            submission_type = SubmissionType.objects.filter(name=request.POST["submission_type"]).first(),
+            service_advisor = ServiceAdvisor.objects.filter(name=request.POST["service_advisor"]).first(),
+            technician = Technician.objects.filter(name=request.POST["technician"]).first(),
+            upload_date = datetime.now()
+        )
+        serializer = ClaimSerializer(dealership)
+        return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_201_CREATED)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception as err:
+        print(err)
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+
+
+@api_view(["GET"])
+@csrf_exempt
+# @permission_classes([IsAuthenticated])
+def get_claims(request):
+    claims = Claim.objects.all()
+    
+    serializer = ClaimSerializer(claims, many=True)
+    return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)           
+
+
+@api_view(["GET"])
+@csrf_exempt
+# @permission_classes([IsAuthenticated])
+def get_claim(request, claim_id):
+    claims = Claim.objects.filter(id=claim_id)
+    
+    serializer = ClaimSerializer(claims, many=True)
+    return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+# @permission_classes([IsAuthenticated])
+def get_claims_dealership(request, dealership_name):
+    claims = Claim.objects.filter(dealership=dealership_name)
+    
+    serializer = ClaimSerializer(claims, many=True)
+    return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)    
+
+#     repair_order = models.IntegerField( help_text='Enter Repair Order Number')
+#     pdf = models.CharField( max_length=100, verbose_name='PDF file name' )
+#     dealership = models.ForeignKey(Dealership, on_delete=models.CASCADE, verbose_name='dealership name', null=True) 
+#     service_advisor = models.ForeignKey(ServiceAdvisor, on_delete=models.CASCADE, verbose_name='service advisor name', null=True) 
+#     technician = models.ForeignKey(Technician, on_delete=models.CASCADE, verbose_name='technician name', null=True) 
+#     claim_type = models.ForeignKey(ClaimType, on_delete=models.CASCADE, verbose_name='claim type', null=True) 
+#     submission_type = models.ForeignKey(SubmissionType, on_delete=models.CASCADE, verbose_name='submission type', null=True)        
 
 
 # @api_view(["POST"])

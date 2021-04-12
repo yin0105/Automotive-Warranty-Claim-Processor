@@ -20,6 +20,8 @@ import ReduxToastr from 'react-redux-toastr'
 
 // import CollectionList from "views/Collections/CollectionList"
 
+const TITLE = 'Claim Manage App';
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>

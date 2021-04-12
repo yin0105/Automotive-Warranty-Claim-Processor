@@ -4,195 +4,271 @@ import {
   Container,
   Row,
   Col,
-  Table,
-  OverlayTrigger,
-  Tooltip,
-  FormGroup,
   FormLabel,
-  FormText,
   FormControl,
-  Radio,
-  FormCheck,
+  Form,
 } from "react-bootstrap";
 
-// react component that creates a switch button that changes from on to off mode
-import Switch from "react-bootstrap-switch";
-
-import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
+import Select from 'react-select'
+import { useSelector } from 'react-redux'
+import {connect} from "react-redux"
 
-import img1 from "assets/img/blog-1.jpg";
-import img2 from "assets/img/blog-2.jpg";
-import img3 from "assets/img/blog-3.jpg";
-import img4 from "assets/img/blog-4.jpg";
-import img5 from "assets/img/blog-5.jpg";
+const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+
+
+// export const SelectClaimType = () => {
+//     const old_options = useSelector(state => state.auth.claim_types.claim_types)
+//     let new_options = []
+//     for (const i in old_options) {
+//         let option = {}
+//         option["value"] = old_options[i].name
+//         option["label"] = old_options[i].name
+//         new_options.push(option)
+//     };
+
+//     // handleClaimTypeChange = (e) => {
+//     //   this.setState({claim_type: e.value})
+//     //   console.log("claim_type", this.state.claim_type)
+//     // }
+//     // onChange={e => {
+//     //   console.log("changed", e.target.value);
+
+   
+//     return <Select options={new_options} />
+// }
+
+// export const SelectSubmissionType = () => {
+//     const old_options = useSelector(state => state.auth.submission_types.submission_types)
+//     let new_options = []
+//     for (const i in old_options) {
+//         let option = {}
+//         option["value"] = old_options[i].name
+//         option["label"] = old_options[i].name
+//         new_options.push(option)
+//     }
+//     return <Select options={new_options} />
+// }
+
+// export const SubmissionTypes = () => {
+//   const old_options = useSelector(state => state.auth.submission_types.submission_types)
+//   const new_options = old_options.map(d => ({
+//     "value" : d.name,
+//     "label" : d.name
+//   }))
+
+//   return <Select options={new_options} onChange={(value) => {
+//     console.log("########## ok", value);
+//   }} />
+// }
+
+// export const SelectServiceAdvisor = () => {
+//     const old_options = useSelector(state => state.auth.service_advisors.service_advisor)
+//     let new_options = []
+//     for (const i in old_options) {
+//         let option = {}
+//         option["value"] = old_options[i].id
+//         option["label"] = old_options[i].name
+//         new_options.push(option)
+//     }
+//     return <Select options={new_options} />
+// }
+
+// export const SelectTechnician = () => {
+//     const old_options = useSelector(state => state.auth.technicians.technicians)
+//     let new_options = []
+//     for (const i in old_options) {
+//         let option = {}
+//         option["value"] = old_options[i].id
+//         option["label"] = old_options[i].name
+//         new_options.push(option)
+//     }
+//     return <Select options={new_options} />
+// }
 
 class AddRepairOrder extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      repair_order: -1,
+      pdf: '',
+      dealership: '',
+      claim_type: [],
+      submission_type: [],
+      service_advisor: [],
+      technician: [],
+    }
+  }
+
+  handleClaimTypeChange = (claim_type) => {
+    this.setState({ claim_type });
+    console.log(this.state)
+    console.log(claim_type)
+  }
+
+  handleSubmissionTypeChange = (submission_type) => {
+    this.setState({ submission_type });
+    console.log(this.state)
+    console.log(submission_type)
+  }
+
+  handleServiceAdvisorChange = (service_advisor) => {
+    this.setState({ service_advisor });
+    console.log(this.state)
+    console.log(service_advisor)
+  }
+
+  handleTechnicianChange = (technician) => {
+    this.setState({ technician });
+  }
+
+  // componentDidMount() {
+  //   this.getOptions()
+  // }
+
+  // async getOptions() {
+  //   const old_options = await useSelector(state => state.auth.submission_types.submission_types)
+
+  //   const options = old_options.map(d => ({
+  //     "value" : d.name,
+  //     "label" : d.name
+  //   }))
+  //   this.setState({claim_type_list: options})
+  // }
+
+  // handleClaimTypeChange(e){
+  //   this.setState({claim_type: e.value})
+  //   console.log("claim_type", this.state.claim_type)
+  // }
+
+  // handleSubmissionTypeChange(e){
+  //   this.setState({"submission_type": e.value})
+  // }
+
+  // handleSubmissionTypeChange(e){
+  //   this.setState({"submission_type": e.value})
+  // }
+
+  // handleSubmissionTypeChange(e){
+  //   this.setState({"submission_type": e.value})
+  // }
+
+
+  
+  
+  handleUpload = e => {
+    e.preventDefault();
+
+    console.log("claim_type: ", this.state.claim_type)
+    console.log("submission_type: ", this.state.submission_type)
+    console.log("service_advisor: ", this.state.service_advisor)
+    console.log("technician: ", this.state.technician)
+
+    // let email = e.target.elements.email.value;
+    // let password = e.target.elements.password.value;
+    // let errors = this.state.errors;
+    // const queryString = require('query-string');
+    // let parsed = queryString.parse(this.props.location.search);
+
+    // if (email === '') {
+    //   errors.email = 'Email is required';
+    //   this.setState({errors});
+    //   return;
+    // }
+
+    // if (!validateEmail(email)) {
+    //   errors.email = 'Email is invalid.';
+    //   this.setState({errors});
+    //   return;
+    // }
+
+    // if (password === '') {
+    //   errors.password = 'Password is required';
+    //   this.setState({errors});
+    //   return;
+    // }
+
+    // this.props.login(email, password)
+    //   .catch(err => {
+    //     // console.log(err.response.data.non_field_errors[0]);
+    //     if (err.response.data.non_field_errors[0] === 'register') {
+    //       toastr.error('Login Failed!', 'Please register');
+    //       this.props.history.push('/register')
+    //     }else if (err.response.data.non_field_errors[0] === 'email') {
+    //       toastr.error('Login Failed!', 'Please verify your email address');
+    //       // this.props.history.push('/login/email_verification')
+    //     }else if (err.response.data.non_field_errors[0] === 'password') {
+    //       toastr.error('Login Failed!', 'Invalid password');
+    //       this.props.history.push('/login')
+    //     }
+    //   })
+  };
+
   render() {
-    const view = <Tooltip id="view">View Profile</Tooltip>;
-    const edit = <Tooltip id="edit">Edit Profile</Tooltip>;
-    const remove = <Tooltip id="remove">Remove</Tooltip>;
-    const viewPost = <Tooltip id="view">View Post</Tooltip>;
-    const editPost = <Tooltip id="edit">Edit Post</Tooltip>;
-    const removePost = <Tooltip id="remove">Remove Post</Tooltip>;
-    const actions = (
-      <td className="td-actions text-center">
-        <OverlayTrigger placement="top" overlay={view}>
-          <Button simple bsStyle="info" bsSize="xs">
-            <i className="fa fa-user" />
-          </Button>
-        </OverlayTrigger>
-        <OverlayTrigger placement="top" overlay={edit}>
-          <Button simple bsStyle="success" bsSize="xs">
-            <i className="fa fa-edit" />
-          </Button>
-        </OverlayTrigger>
-        <OverlayTrigger placement="top" overlay={remove}>
-          <Button simple bsStyle="danger" bsSize="xs">
-            <i className="fa fa-times" />
-          </Button>
-        </OverlayTrigger>
-      </td>
-    );
-    const actionsPost = (
-      <td className="td-actions">
-        <OverlayTrigger placement="left" overlay={viewPost}>
-          <Button simple icon bsStyle="info">
-            <i className="fa fa-image" />
-          </Button>
-        </OverlayTrigger>
-        <OverlayTrigger placement="left" overlay={editPost}>
-          <Button simple icon bsStyle="success">
-            <i className="fa fa-edit" />
-          </Button>
-        </OverlayTrigger>
-        <OverlayTrigger placement="left" overlay={removePost}>
-          <Button simple icon bsStyle="danger">
-            <i className="fa fa-times" />
-          </Button>
-        </OverlayTrigger>
-      </td>
-    );
+    const { claim_type, submission_type, service_advisor, technician } = this.state;
     return (
       <div className="main-content">
-        <Container fluid>
+        <Container fluid className="repair_order">
             <div className="d-flex">
-                <FormLabel className="mx-auto h1 "><b>Add Collection</b></FormLabel>
+                <FormLabel className="mx-auto h1 "><b>Add Repair Order</b></FormLabel>
             </div>
-            <Row className="align-items-center mb-4">
-                <Col md={{ span: 3, offset: 2 }} sm={{ span: 5 }} className="text-right">
-                    <FormLabel>Collection Name: </FormLabel>
-                </Col>
-                <Col md={{ span: 5 }} sm={{ span: 7 }}>
-                    <FormControl placeholder="Enter Collection Name" type="text" />
-                </Col>
-            </Row>
             <Row>
-                <Col md={{ span: 2, offset:1 }} sm={{ span: 3 }} className="text-right">
-                    <FormCheck inline label="API driven" type="checkbox"/>
-                </Col>
-                <Col md={{ span: 8}} sm={{ span:9 }}>
-                    <Card
-                        content={
-                            <div >
-                                <Row className="mt-0">
-                                    <FormText  className="text-center w-100">Choose the sports for this collection</FormText>
-                                </Row>
-                                <Row className="d-flex justify-content-center mb-0">
-                                    <FormCheck inline label="NBA" type="checkbox"/>
-                                    <FormCheck inline label="NFL" type="checkbox"/>
-                                    <FormCheck inline label="MLB" type="checkbox"/>
-                                    <FormCheck inline label="NCAAB" type="checkbox"/>
-                                    <FormCheck inline label="NCAAF" type="checkbox"/>
-                                </Row>
-                            </div>
-                        }
-                    />
-                    <Card
-                        content={
-                            <div >
-                                <Row className="mt-0">
-                                    <Col md={{ span: 9 }}>
-                                        <FormGroup>
-                                            <FormLabel>SQL statement:</FormLabel>
-                                            <FormControl as="textarea" rows={3}></FormControl>
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={{ span: 3}} className="align-items-center d-flex justify-content-center">
-                                        <Button variant="info" className="btn-fill">Test SQL</Button>
-                                    </Col>
-                                </Row>
-                            </div>
-                        }
-                    />
-                </Col>
-            </Row>
-
-            <Row>
-                <Col md={{ span: 10, offset:1 }} sm={{ span: 12 }}>
-                    <Button variant="info" className="btn-fill">Add New Field</Button>
-                </Col>
-            </Row>
-            <Row>
-                <Col md={{ span: 10, offset:1 }} sm={{ span: 12 }}>
-                    <Card
-                        content={
-                            <div >
-                                <Row className="align-items-center">
-                                    <Col md={{ span:2 }} className="text-right">
-                                        <FormLabel>Field Name: </FormLabel>
-                                    </Col>
-                                    <Col md={{ span:3 }}>
-                                        <FormControl type="text"/>
-                                    </Col>
-                                    <Col md={{ span:2 }} className="text-right">
-                                        <FormLabel>Field Type: </FormLabel>
-                                    </Col>
-                                    <Col md={{ span:3 }}>
-                                        <FormControl as="select">
-                                            <option>option 1</option>
-                                            <option>option 2</option>
-                                        </FormControl>
-                                    </Col>
-                                    <Col md={{ span:2 }} className="justify-content-center d-flex">
-                                        <Button variant="info" className="btn-fill">Remove</Button>
-                                    </Col>
-                                </Row>
-
-                                <Row className="align-items-center">
-                                    <Col md={{ span:2 }} className="text-right">
-                                        <FormLabel>Field Name: </FormLabel>
-                                    </Col>
-                                    <Col md={{ span:3 }}>
-                                        <FormControl type="text"/>
-                                    </Col>
-                                    <Col md={{ span:2 }} className="text-right">
-                                        <FormLabel>Field Type: </FormLabel>
-                                    </Col>
-                                    <Col md={{ span:3 }}>
-                                        <FormControl as="select">
-                                            <option>option 1</option>
-                                            <option>option 2</option>
-                                        </FormControl>
-                                    </Col>
-                                    <Col md={{ span:2 }} className="justify-content-center d-flex">
-                                        <Button variant="info" className="btn-fill">Remove</Button>
-                                    </Col>
-                                </Row>
-                            </div>
-                        }
-                        legend={
-                            <Row>
-                                <Col md={{ span: 2, offset: 4 }} className="d-flex justify-content-center">
-                                    <Button variant="warning" className="btn-fill">Cancel</Button>
-                                </Col>
-                                <Col md={{ span: 2}} className="d-flex justify-content-center">
-                                    <Button variant="primary" className="btn-fill">Save</Button>
-                                </Col>
-                            </Row>
-                        }
-                    />
+                <Col md={{ span: 10, offset: 1}} sm={{ span: 12 }} lg={{ span: 8, offset: 2 }}>
+                  <Form onSubmit={this.handleUpload}>
+                    <Row>
+                        <Col md={{ span:5 }} className="text-right">
+                            <FormLabel>Repair Order : </FormLabel>
+                        </Col>
+                        <Col md={{ span:7 }}>
+                            <FormControl placeholder="Enter Repair Order" type="text" />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={{ span:5 }} className="text-right">
+                            <FormLabel>Claim Type : </FormLabel>
+                        </Col>
+                        <Col md={{ span:7 }}>
+                            <Select options={this.props.claim_types} value={claim_type} onChange={this.handleClaimTypeChange}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={{ span:5 }} className="text-right">
+                            <FormLabel>Submission Type : </FormLabel>
+                        </Col>
+                        <Col md={{ span:7 }}>
+                            <Select options={this.props.submission_types} value={submission_type} onChange={this.handleSubmissionTypeChange}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={{ span:5 }} className="text-right">
+                            <FormLabel>Service Advisor : </FormLabel>
+                        </Col>
+                        <Col md={{ span:7 }}>
+                            <Select options={this.props.service_advisors} value={service_advisor} onChange={this.handleServiceAdvisorChange}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={{ span:5 }} className="text-right">
+                            <FormLabel>Technician : </FormLabel>
+                        </Col>
+                        <Col md={{ span:7 }}>
+                            <Select options={this.props.technicians} value={technician} onChange={this.handleTechnicianChange}/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5">
+                        <Col md={{ span: 3, offset: 3}} className="align-items-center d-flex justify-content-center">
+                            <Button variant="warning" className="btn-fill" type="reset">Cancel</Button>
+                        </Col>
+                        <Col md={{ span: 3}} className="align-items-center d-flex justify-content-center">
+                            <Button variant="primary" className="btn-fill" type="submit">Upload</Button>
+                        </Col>
+                    </Row>
+                  </Form>
                 </Col>
             </Row>
         </Container>
@@ -201,4 +277,24 @@ class AddRepairOrder extends Component {
   }
 }
 
-export default AddRepairOrder;
+const mapStateToProps = state => ({
+  claim_types: state.auth.claim_types.claim_types.map(d => ({
+    "value" : d.name,
+    "label" : d.name
+  })),
+  submission_types: state.auth.submission_types.submission_types.map(d => ({
+    "value" : d.name,
+    "label" : d.name
+  })),
+  service_advisors: state.auth.service_advisors.service_advisor.map(d => ({
+    "value" : d.id,
+    "label" : d.name
+  })),
+  technicians: state.auth.technicians.technicians.map(d => ({
+    "value" : d.id,
+    "label" : d.name
+  })),
+});
+
+// export default AddRepairOrder;
+export default connect(mapStateToProps)(AddRepairOrder);

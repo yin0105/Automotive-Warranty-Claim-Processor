@@ -127,3 +127,27 @@ div.form-check {
 td, th {
     text-align: center;
 }
+
+/* new */
+.repair_order label {
+    font-size: 24px;
+    text-align: right;
+}
+
+.repair_order label.h1 {
+    font-size: 45px !important;
+}
+
+.repair_order div.row {
+    margin: 20px;
+    align-items: baseline;
+}
+
+.repair_order .form-control {
+    font-size: 16px;
+    height: 50px;
+}
+
+.container_login .card {
+    min-width: 300px;
+}

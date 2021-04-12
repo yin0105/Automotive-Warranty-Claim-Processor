@@ -130,7 +130,7 @@ class LoginPage extends Component {
     } else {
       let {errors} = this.state;
       return (
-        <Container>
+        <Container className="container_login">
           <Row>
             <Col md={{ span: 4, offset: 4 }} sm={{ span: 6, offset: 3 }}>
               <Form onSubmit={this.handleLogin}>
@@ -156,7 +156,7 @@ class LoginPage extends Component {
                       <Button variant="primary" fill wd type="submit">
                         Login
                       </Button>
-                      <FormText className="text-dark">Don't you have an account? <Link to="/frontend/auth/register-page"> Register</Link></FormText>
+                      {/* <FormText className="text-dark">Don't you have an account? <Link to="/frontend/auth/register-page"> Register</Link></FormText> */}
                     </FormGroup>
                   }
                   ftTextCenter
@@ -172,7 +172,7 @@ class LoginPage extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: AuthHelper.isAuthenticated(),
-  isSuperAdmin: AuthHelper.isSuperAdmin()
+  isSuperAdmin: AuthHelper.isSuperAdmin(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

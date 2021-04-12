@@ -90,6 +90,7 @@ class Claim(models.Model):
     technician = models.ForeignKey(Technician, on_delete=models.CASCADE, verbose_name='technician name', null=True) 
     claim_type = models.ForeignKey(ClaimType, on_delete=models.CASCADE, verbose_name='claim type', null=True) 
     submission_type = models.ForeignKey(SubmissionType, on_delete=models.CASCADE, verbose_name='submission type', null=True) 
+    upload_date = models.DateTimeField(null=True) 
 
     # Metadata
     class Meta:
