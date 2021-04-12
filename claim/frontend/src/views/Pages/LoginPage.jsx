@@ -16,7 +16,7 @@ import { Link, Redirect } from 'react-router-dom';
 import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
-import { login, getUserInfo, get_basic_data } from 'redux/actions/auth.jsx';
+import { login, getUserInfo, getBasicData } from 'redux/actions/auth.jsx';
 import {connect} from "react-redux";
 import AuthHelper from 'helpers/authHelper.jsx';
 import {validateEmail} from 'helpers/commonHelper.jsx';
@@ -38,18 +38,7 @@ class LoginPage extends Component {
         this.setState({ cardHidden: false });
       }.bind(this),
       700
-    );
-    this.props.get_basic_data()
-      .then(
-        () => {
-          console.log("######## get_basic_data() :: Success");
-        }
-      ).catch(
-        err => {
-          console.log("Get Basic Data Error");
-        }
-
-      );
+    );    
   }
 
   handleLogin = e => {
@@ -83,6 +72,20 @@ class LoginPage extends Component {
     this.props.login(email, password)
       .then(
         () => {
+          // Get Basic Data (claim types, submission types, service advisors, technicians)
+          this.props.get_basic_data()
+            .then(
+              () => {
+                console.log("############ get_basic_data() :: Success");
+                // Get User Information                
+              }
+            ).catch(
+              err => {
+                console.log("Get Basic Data Error");
+              }
+
+            );
+
           this.props.get_userinfo()
             .then(
               () => {
@@ -94,6 +97,7 @@ class LoginPage extends Component {
               }
 
             );
+          
         }
       ).catch(err => {
         console.log("Login Error:::");

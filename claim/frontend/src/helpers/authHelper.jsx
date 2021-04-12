@@ -71,19 +71,19 @@ class AuthHelper {
   }
 
   getClaimTypeList = () => {
-    return ApiHelper.get('/api/accounts/data/');
+    return ApiHelper.get('/api/claim/get_claim_types');
   };
 
   getSubmissionTypeList = () => {
-    return ApiHelper.get('/api/accounts/data/');
+    return ApiHelper.get('/api/claim/get_submission_types');
   };
 
   getServiceAdvisorList = () => {
-    return ApiHelper.get('/api/accounts/data/');
+    return ApiHelper.get('/api/claim/get_service_advisors');
   };
 
   getTechnicianList = () => {
-    return ApiHelper.get('/api/accounts/data/');
+    return ApiHelper.get('/api/claim/get_technicians');
   };
 }
 
