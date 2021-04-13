@@ -1,11 +1,12 @@
 from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.fields import NullBooleanField
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from .serializers import ClaimTypeSerializer, SubmissionTypeSerializer, ServiceAdvisorSerializer, TechnicianSerializer, ClaimSerializer
 from .models import ClaimType, Dealership, SubmissionType, ServiceAdvisor, Technician, Claim
 from rest_framework import status
-import json
+import os
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import Permission
 from django.shortcuts import get_object_or_404
@@ -17,6 +18,50 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from os.path import join, dirname
+from dotenv import load_dotenv
+import boto3
+from botocore.exceptions import ClientError
+
+
+
+cur_path = dirname(__file__)
+root_path = cur_path[:cur_path.rfind(os.path.sep)]
+load_dotenv(join(root_path, '.env'))
+s3_bucket = os.environ.get('S3_BUCKET')
+print('s3_bucekt = ', s3_bucket)
+
+
+def aws_session(region_name='us-east-1'):
+    return boto3.session.Session(aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                                aws_secret_access_key=os.getenv('AWS_ACCESS_KEY_SECRET'),
+                                region_name=region_name)
+
+
+def upload_file_to_bucket(file_path, folder_name):
+    session = aws_session()
+    s3_resource = session.resource('s3')
+    file_dir, file_name = os.path.split(file_path)
+
+    bucket = s3_resource.Bucket(s3_bucket)
+    bucket.upload_file(
+      Filename=file_path,
+      Key=folder_name + "/" + file_name,
+      ExtraArgs={'ACL': 'public-read'}
+    )
+
+    s3_url = f"https://{s3_bucket}.s3.amazonaws.com/{file_name}"
+    return s3_url
+
+
+def delete_folder_from_bucket(folder_name):
+    s3_client = boto3.client('s3')
+    PREFIX = folder_name + '/'
+    response = s3_client.list_objects_v2(Bucket=s3_bucket, Prefix=PREFIX)
+
+    for object in response['Contents']:
+        print('Deleting', object['Key'])
+        s3_client.delete_object(Bucket=s3_bucket, Key=object['Key'])                                
 
 # @api_view(["GET"])
 # @csrf_exempt
@@ -162,7 +207,12 @@ class ClaimView(APIView):
     # parser_classes = (MultiPartParser, FormParser)
 
     def get(self, request, *args, **kwargs):
-        posts = Claim.objects.all()
+        print([i for i in request.GET])
+        posts = ""
+        if "dealership" in request.GET :
+            posts = Claim.objects.filter(dealership = request.GET["dealership"])
+        else:
+            posts = Claim.objects.all()
         serializer = ClaimSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -170,6 +220,24 @@ class ClaimView(APIView):
         posts_serializer = ClaimSerializer(data=request.data)
         if posts_serializer.is_valid():
             posts_serializer.save()
+            print(posts_serializer.data["pdf"])
+            pdf = posts_serializer.data["pdf"]
+            pdf = pdf[pdf.rfind("/")+1:]
+            print(pdf)
+
+            # Upload to S3 Bucket
+            file_path = join(root_path, pdf)
+            print("#"*50)
+            print(os.path.sep)
+            print(root_path, file_path)
+            print(str(file_path.rfind(os.path.sep)))
+            file_name = file_path[file_path.rfind(os.path.sep) + 1:]
+            print(file_name)
+            print(s3_bucket, file_path, posts_serializer.data["dealership"] + "/" + file_name)
+            # try:
+            #     upload_file_to_bucket(s3_bucket, file_path, posts_serializer.data["dealership"] + "/" + file_name)
+            # except :
+            #     print("Upload error")
             return Response(posts_serializer.data, status=status.HTTP_201_CREATED)
         else:
             print('error', posts_serializer.errors)

@@ -139,13 +139,12 @@ td, th {
 }
 
 .repair_order div.row {
-    margin: 20px;
+    margin: 10px;
     align-items: baseline;
 }
 
 .repair_order .form-control {
     font-size: 16px;
-    height: 50px;
 }
 
 .container_login .card {

@@ -7,14 +7,13 @@ import {
   FormLabel,
   FormControl,
   Form,
-  Alert,
 } from "react-bootstrap";
 import axios from 'axios';
 import Button from "components/CustomButton/CustomButton.jsx";
 import Select from 'react-select'
 import {connect} from "react-redux"
+import { Link } from "react-router-dom"
 import FileUpload from "views/Components/FileUpload"
-import NotificationSystem from 'react-notification-system';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import 'react-notifications/dist/react-notifications'
@@ -74,14 +73,6 @@ class AddRepairOrder extends React.Component {
 
   handleUpload = e => {
     e.preventDefault();
-
-    // console.log("claim_type: ", this.state.claim_type.value)
-    // console.log("submission_type: ", this.state.submission_type.value)
-    // console.log("service_advisor: ", this.state.service_advisor.value)
-    // console.log("technician: ", this.state.technician.value)
-    // console.log("file upload =", this.state.newUserInfo.profileImages[0].name)
-
-    // console.log(e.target.value)
     
     let form_data = new FormData();
 
@@ -89,7 +80,6 @@ class AddRepairOrder extends React.Component {
     if (this.state.repair_order == null || this.state.repair_order != parseInt(this.state.repair_order, 10)) {
       console.log("this.state.repair_order = ", this.state.repair_order)
       console.log("parse = ",  parseInt(this.state.repair_order, 10))
-      // this.setState({ 'alert': ['Upload Failed!','Please enter correct repair order.'] });
       this.createNotification('error', 'Upload Failed!', 'Please enter correct repair order.')
       return false;
     }
@@ -98,7 +88,6 @@ class AddRepairOrder extends React.Component {
     try {
       form_data.append('claim_type', this.state.claim_type.value);
     } catch {
-      // this.setState({ 'alert': ['Upload Failed!', 'Please select a claim type.'] });
       this.createNotification('error', 'Upload Failed!', 'Please select a claim type.')
       return false;
     }
@@ -106,7 +95,6 @@ class AddRepairOrder extends React.Component {
     try {
       form_data.append('submission_type', this.state.submission_type.value);
     } catch {
-      // this.setState({ 'alert': ['Upload Failed!', 'Please select a submission type.'] });
       this.createNotification('error', 'Upload Failed!', 'Please select a submission type.')
       return false;
     }
@@ -114,7 +102,6 @@ class AddRepairOrder extends React.Component {
     try {
       form_data.append('service_advisor', this.state.service_advisor.value);
     } catch {
-      // this.setState({ 'alert': ['Upload Failed!', 'Please enter correct repair order.'] });
       this.createNotification('error', 'Upload Failed!', 'Please select a service advisor.')
       return false;
     }
@@ -122,7 +109,6 @@ class AddRepairOrder extends React.Component {
     try {
       form_data.append('technician', this.state.technician.value);
     } catch {
-      // this.setState({ 'alert': ['Upload Failed!', 'Please select a technician.'] });
       this.createNotification('error', 'Upload Failed!', 'Please select a technician.')
       return false;
     }
@@ -130,12 +116,9 @@ class AddRepairOrder extends React.Component {
     try {
       form_data.append('pdf', this.state.newUserInfo.profileImages[0], this.state.newUserInfo.profileImages[0].name);
     } catch {
-      // this.setState({ 'alert': ['Upload Failed!', 'Please select a pdf file.'] });
       this.createNotification('error', 'Upload Failed!', 'Please select a pdf file.')
       return false;
     }
-
-    
     
     
     form_data.append('dealership', this.props.dealership);
@@ -147,7 +130,6 @@ class AddRepairOrder extends React.Component {
       }
     }).then(res => {
       console.log("Insert Claim ::", res.data);
-      // this.setState({ 'alert': ['Upload Success!', ''] })
       this.createNotification('success', 'Upload Success!', '')
       return
     }).catch(err => console.log(err))
@@ -184,10 +166,6 @@ class AddRepairOrder extends React.Component {
     return (
       <div className="main-content">
         <Container fluid className="repair_order">
-          {/* <NotificationSystem ref={this.notificationSystem} /> */}
-          {/* {
-            this.state.alert != "" && this.createNotification('error')
-          } */}
             <div className="d-flex">
                 <FormLabel className="mx-auto h1 "><b>Add Repair Order</b></FormLabel>
             </div>
@@ -246,12 +224,12 @@ class AddRepairOrder extends React.Component {
                           />
                         </Col>
                     </Row>
-                    <Row className="mt-5">
+                    <Row className="mt-0">
                         <Col md={{ span: 3, offset: 3}} className="align-items-center d-flex justify-content-center">
-                            <Button variant="warning" className="btn-fill" type="button">Cancel</Button>
+                          <Button variant="primary" className="btn-fill" type="submit">Upload</Button>                            
                         </Col>
                         <Col md={{ span: 3}} className="align-items-center d-flex justify-content-center">
-                            <Button variant="primary" className="btn-fill" type="submit">Upload</Button>
+                          <Link to="/frontend/dealership/repair_order" className="mx-auto btn btn-warning btn-fill">Close</Link>
                         </Col>
                     </Row>
                   </Form>

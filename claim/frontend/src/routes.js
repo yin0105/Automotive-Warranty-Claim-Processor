@@ -1,33 +1,7 @@
-import Dashboard from "views/Dashboard.jsx";
-import Buttons from "views/Components/Buttons.jsx";
-import GridSystem from "views/Components/GridSystem.jsx";
-import Panels from "views/Components/Panels.jsx";
-import SweetAlert from "views/Components/SweetAlertPage.jsx";
-import Notifications from "views/Components/Notifications.jsx";
-import Icons from "views/Components/Icons.jsx";
-import Typography from "views/Components/Typography.jsx";
-import RegularForms from "views/Forms/RegularForms.jsx";
-import ExtendedForms from "views/Forms/ExtendedForms.jsx";
-import ValidationForms from "views/Forms/ValidationForms.jsx";
-import Wizard from "views/Forms/Wizard/Wizard.jsx";
-import RegularTables from "views/Tables/RegularTables.jsx";
-import ExtendedTables from "views/Tables/ExtendedTables.jsx";
-import ReactTables from "views/Tables/ReactTables.jsx";
-import GoogleMaps from "views/Maps/GoogleMaps.jsx";
-import FullScreenMap from "views/Maps/FullScreenMap.jsx";
-import VectorMap from "views/Maps/VectorMap.jsx";
-import Charts from "views/Charts.jsx";
-import Calendar from "views/Calendar.jsx";
-import UserPage from "views/Pages/UserPage.jsx";
+
 import LoginPage from "views/Pages/LoginPage.jsx";
 import LogoutPage from "views/Pages/LogoutPage.jsx";
-import RegisterPage from "views/Pages/RegisterPage.jsx";
-import LockScreenPage from "views/Pages/LockScreenPage.jsx";
-import ScheduleList from "views/Schedules/ScheduleList";
-import AddSchedule from "views/Schedules/AddSchedule";
 import ScheduleStatus from "views/Schedules/ScheduleStatus";
-import ScheduleListUser from "views/Schedules/ScheduleListUser"
-
 import RepairOrderList from "views/RepairOrders/RepairOrderList";
 import AddRepairOrder from "views/RepairOrders/AddRepairOrder";
 
