@@ -1,7 +1,10 @@
+from django.db.models.fields import DateTimeField
 from rest_framework import serializers, fields
 from .models import ClaimType, SubmissionType, ServiceAdvisor, Technician, Claim
+from datetime import datetime
 
 class ClaimTypeSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = ClaimType
         fields = ['name']
@@ -26,7 +29,8 @@ class TechnicianSerializer(serializers.ModelSerializer):
 
 
 class ClaimSerializer(serializers.ModelSerializer):
-    # upload_date = fields.DateField(input_formats=['%Y-%m-%dT%H:%M:%S.%fZ'])
+    pdf = serializers.FileField()
+    # upload_date = DateTimeField()
     class Meta:
         model = Claim
         fields = ['id', 'repair_order', 'pdf', 'dealership', 'claim_type', 'submission_type', 'service_advisor', 'technician', 'upload_date']               

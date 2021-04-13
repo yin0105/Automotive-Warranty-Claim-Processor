@@ -12,6 +12,11 @@ from django.shortcuts import get_object_or_404
 from accounts.models import CustomUser
 from datetime import datetime
 
+from rest_framework.exceptions import ParseError
+from rest_framework.parsers import FileUploadParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 
 # @api_view(["GET"])
 # @csrf_exempt
@@ -82,58 +87,93 @@ def get_technicians(request):
     return JsonResponse({'technicians': serializer.data}, safe=False, status=status.HTTP_200_OK)         
 
 
-@api_view(["POST"])
-@csrf_exempt
-# @permission_classes([IsAuthenticated])
-def add_claim(request):
-    try:
-        dealership = Claim.objects.create(
-            repair_order=request.POST["repair_order"],
-            pdf=request.POST["pdf"],
-            dealership = Dealership.objects.filter(name=request.POST["dealership"]).first(),
-            claim_type = ClaimType.objects.filter(name=request.POST["claim_type"]).first(),
-            submission_type = SubmissionType.objects.filter(name=request.POST["submission_type"]).first(),
-            service_advisor = ServiceAdvisor.objects.filter(name=request.POST["service_advisor"]).first(),
-            technician = Technician.objects.filter(name=request.POST["technician"]).first(),
-            upload_date = datetime.now()
-        )
-        serializer = ClaimSerializer(dealership)
-        return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_201_CREATED)
-    except ObjectDoesNotExist as e:
-        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
-    except Exception as err:
-        print(err)
-        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+# @api_view(["POST"])
+# @csrf_exempt
+# # @permission_classes([IsAuthenticated])
+# def add_claim(request):
+#     try:
+#         dealership = Claim.objects.create(
+#             repair_order=request.POST["repair_order"],
+#             pdf=request.POST["pdf"],
+#             dealership = Dealership.objects.filter(name=request.POST["dealership"]).first(),
+#             claim_type = ClaimType.objects.filter(name=request.POST["claim_type"]).first(),
+#             submission_type = SubmissionType.objects.filter(name=request.POST["submission_type"]).first(),
+#             service_advisor = ServiceAdvisor.objects.filter(name=request.POST["service_advisor"]).first(),
+#             technician = Technician.objects.filter(name=request.POST["technician"]).first(),
+#             upload_date = datetime.now()
+#         )
+#         serializer = ClaimSerializer(dealership)
+#         return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_201_CREATED)
+#     except ObjectDoesNotExist as e:
+#         return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+#     except Exception as err:
+#         print(err)
+#         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
 
 
-@api_view(["GET"])
-@csrf_exempt
-# @permission_classes([IsAuthenticated])
-def get_claims(request):
-    claims = Claim.objects.all()
+# @api_view(["GET"])
+# @csrf_exempt
+# # @permission_classes([IsAuthenticated])
+# def get_claims(request):
+#     claims = Claim.objects.all()
     
-    serializer = ClaimSerializer(claims, many=True)
-    return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)           
+#     serializer = ClaimSerializer(claims, many=True)
+#     return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)           
 
 
-@api_view(["GET"])
-@csrf_exempt
-# @permission_classes([IsAuthenticated])
-def get_claim(request, claim_id):
-    claims = Claim.objects.filter(id=claim_id)
+# @api_view(["GET"])
+# @csrf_exempt
+# # @permission_classes([IsAuthenticated])
+# def get_claim(request, claim_id):
+#     claims = Claim.objects.filter(id=claim_id)
     
-    serializer = ClaimSerializer(claims, many=True)
-    return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)
+#     serializer = ClaimSerializer(claims, many=True)
+#     return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
-@csrf_exempt
-# @permission_classes([IsAuthenticated])
-def get_claims_dealership(request, dealership_name):
-    claims = Claim.objects.filter(dealership=dealership_name)
+# @api_view(["GET"])
+# @csrf_exempt
+# # @permission_classes([IsAuthenticated])
+# def get_claims_dealership(request, dealership_name):
+#     claims = Claim.objects.filter(dealership=dealership_name)
     
-    serializer = ClaimSerializer(claims, many=True)
-    return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)    
+#     serializer = ClaimSerializer(claims, many=True)
+#     return JsonResponse({'claims': serializer.data}, safe=False, status=status.HTTP_200_OK)    
+
+
+class PdfUploadParser(FileUploadParser):
+    media_type = 'pdf/*'
+class ClaimView(APIView):
+    parser_class = (PdfUploadParser,)
+
+    def put(self, request, format=None):
+        if 'file' not in request.data:
+            raise ParseError("Empty content")
+
+        f = request.data['file']
+
+        Claim.pdf.save(f.name, f, save=True)
+        return Response(status=status.HTTP_201_CREATED)
+
+    def delete(self, request, format=None):
+        Claim.pdf.delete(save=True)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # parser_classes = (MultiPartParser, FormParser)
+
+    def get(self, request, *args, **kwargs):
+        posts = Claim.objects.all()
+        serializer = ClaimSerializer(posts, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        posts_serializer = ClaimSerializer(data=request.data)
+        if posts_serializer.is_valid():
+            posts_serializer.save()
+            return Response(posts_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print('error', posts_serializer.errors)
+            return Response(posts_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #     repair_order = models.IntegerField( help_text='Enter Repair Order Number')
 #     pdf = models.CharField( max_length=100, verbose_name='PDF file name' )

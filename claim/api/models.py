@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import validators
 from django.contrib import auth
+from django.utils import timezone
+
 
 
 class ClaimType(models.Model):
@@ -84,18 +86,23 @@ class Technician(models.Model):
 class Claim(models.Model):
     id = models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)
     repair_order = models.IntegerField( help_text='Enter Repair Order Number')
-    pdf = models.CharField( max_length=100, verbose_name='PDF file name' )
+    pdf = models.FileField(upload_to="pdf_folder")
     dealership = models.ForeignKey(Dealership, on_delete=models.CASCADE, verbose_name='dealership name', null=True) 
     service_advisor = models.ForeignKey(ServiceAdvisor, on_delete=models.CASCADE, verbose_name='service advisor name', null=True) 
     technician = models.ForeignKey(Technician, on_delete=models.CASCADE, verbose_name='technician name', null=True) 
     claim_type = models.ForeignKey(ClaimType, on_delete=models.CASCADE, verbose_name='claim type', null=True) 
     submission_type = models.ForeignKey(SubmissionType, on_delete=models.CASCADE, verbose_name='submission type', null=True) 
-    upload_date = models.DateTimeField(null=True) 
+    upload_date = models.DateTimeField(null=True)
 
     # Metadata
     class Meta:
         ordering = ['dealership', 'repair_order']
 
     def __str__(self):
-        return self.id   
+        return self.id
+
+    def save(self, *args, **kwargs):
+        self.upload_date = timezone.now()
+        self.modified = timezone.now()
+        return super(Claim, self).save(*args, **kwargs)   
          

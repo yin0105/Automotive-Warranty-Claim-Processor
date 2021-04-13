@@ -7,12 +7,18 @@ import {
   FormLabel,
   FormControl,
   Form,
+  Alert,
 } from "react-bootstrap";
 import axios from 'axios';
 import Button from "components/CustomButton/CustomButton.jsx";
 import Select from 'react-select'
 import {connect} from "react-redux"
 import FileUpload from "views/Components/FileUpload"
+import NotificationSystem from 'react-notification-system';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import 'react-notifications/dist/react-notifications'
+
 
 // const options = [
 //     { value: 'chocolate', label: 'Chocolate' },
@@ -24,17 +30,18 @@ class AddRepairOrder extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      repair_order: -1,
-      pdf: '',
-      dealership: '',
-      claim_type: [],
-      submission_type: [],
-      service_advisor: [],
-      technician: [],
+      repair_order: null,
+      pdf: null,
+      dealership: null,
+      claim_type: null,
+      submission_type: null,
+      service_advisor: null,
+      technician: null,
       selectedFile: null,
       newUserInfo: {
-        profileImages: []
-      }
+        profileImages: null
+      },
+      alert: '',
     }
   }
 
@@ -60,14 +67,91 @@ class AddRepairOrder extends React.Component {
     this.setState({ technician });
   }
 
+  handleRepairOrderChange = (e) => {
+    this.setState({ repair_order: e.target.value});
+    console.log("repair_order = ", this.state.repair_order)
+  }
+
   handleUpload = e => {
     e.preventDefault();
 
-    console.log("claim_type: ", this.state.claim_type)
-    console.log("submission_type: ", this.state.submission_type)
-    console.log("service_advisor: ", this.state.service_advisor)
-    console.log("technician: ", this.state.technician)
-    console.log("file upload =", this.state.newUserInfo.profileImages[0].name)
+    // console.log("claim_type: ", this.state.claim_type.value)
+    // console.log("submission_type: ", this.state.submission_type.value)
+    // console.log("service_advisor: ", this.state.service_advisor.value)
+    // console.log("technician: ", this.state.technician.value)
+    // console.log("file upload =", this.state.newUserInfo.profileImages[0].name)
+
+    // console.log(e.target.value)
+    
+    let form_data = new FormData();
+
+    const repair_order_ = this.state.repair_order
+    if (this.state.repair_order == null || this.state.repair_order != parseInt(this.state.repair_order, 10)) {
+      console.log("this.state.repair_order = ", this.state.repair_order)
+      console.log("parse = ",  parseInt(this.state.repair_order, 10))
+      // this.setState({ 'alert': ['Upload Failed!','Please enter correct repair order.'] });
+      this.createNotification('error', 'Upload Failed!', 'Please enter correct repair order.')
+      return false;
+    }
+    form_data.append('repair_order', this.state.repair_order);
+
+    try {
+      form_data.append('claim_type', this.state.claim_type.value);
+    } catch {
+      // this.setState({ 'alert': ['Upload Failed!', 'Please select a claim type.'] });
+      this.createNotification('error', 'Upload Failed!', 'Please select a claim type.')
+      return false;
+    }
+    
+    try {
+      form_data.append('submission_type', this.state.submission_type.value);
+    } catch {
+      // this.setState({ 'alert': ['Upload Failed!', 'Please select a submission type.'] });
+      this.createNotification('error', 'Upload Failed!', 'Please select a submission type.')
+      return false;
+    }
+
+    try {
+      form_data.append('service_advisor', this.state.service_advisor.value);
+    } catch {
+      // this.setState({ 'alert': ['Upload Failed!', 'Please enter correct repair order.'] });
+      this.createNotification('error', 'Upload Failed!', 'Please select a service advisor.')
+      return false;
+    }
+
+    try {
+      form_data.append('technician', this.state.technician.value);
+    } catch {
+      // this.setState({ 'alert': ['Upload Failed!', 'Please select a technician.'] });
+      this.createNotification('error', 'Upload Failed!', 'Please select a technician.')
+      return false;
+    }
+
+    try {
+      form_data.append('pdf', this.state.newUserInfo.profileImages[0], this.state.newUserInfo.profileImages[0].name);
+    } catch {
+      // this.setState({ 'alert': ['Upload Failed!', 'Please select a pdf file.'] });
+      this.createNotification('error', 'Upload Failed!', 'Please select a pdf file.')
+      return false;
+    }
+
+    
+    
+    
+    form_data.append('dealership', this.props.dealership);
+    let url = 'http://localhost:8000/api/claim/claim/';
+    axios.post(url, form_data, {
+      headers: {
+        // 'content-type': 'multipart/form-data',
+        'Authorization': 'token ' + this.props.token,
+      }
+    }).then(res => {
+      console.log("Insert Claim ::", res.data);
+      // this.setState({ 'alert': ['Upload Success!', ''] })
+      this.createNotification('success', 'Upload Success!', '')
+      return
+    }).catch(err => console.log(err))
+
   };
 
   updateUploadedFiles = (files) => {
@@ -78,20 +162,32 @@ class AddRepairOrder extends React.Component {
       }
     })
   }
-  
-  // handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     //logic to create new user...
-  //   };
 
-  
+  createNotification = (type, title, content) => {
+    switch (type) {
+      case 'info':
+        return NotificationManager.info(content);
+      case 'success':
+        return NotificationManager.success(content, title);
+      case 'warning':
+        return NotificationManager.warning(content, title, 3000);
+      case 'error':
+        return NotificationManager.error(content, title, 5000, () => {
+          alert('callback');
+        });
+    }
+  };
+ 
 
   render() {
-    const { claim_type, submission_type, service_advisor, technician } = this.state;
-
+    const { claim_type, submission_type, service_advisor, technician, repair_order } = this.state;
     return (
       <div className="main-content">
         <Container fluid className="repair_order">
+          {/* <NotificationSystem ref={this.notificationSystem} /> */}
+          {/* {
+            this.state.alert != "" && this.createNotification('error')
+          } */}
             <div className="d-flex">
                 <FormLabel className="mx-auto h1 "><b>Add Repair Order</b></FormLabel>
             </div>
@@ -103,7 +199,7 @@ class AddRepairOrder extends React.Component {
                             <FormLabel>Repair Order : </FormLabel>
                         </Col>
                         <Col md={{ span:7 }}>
-                            <FormControl placeholder="Enter Repair Order" type="text" />
+                            <FormControl placeholder="Enter Repair Order" type="text" value={repair_order} onChange={this.handleRepairOrderChange} />
                         </Col>
                     </Row>
                     <Row>
@@ -152,13 +248,14 @@ class AddRepairOrder extends React.Component {
                     </Row>
                     <Row className="mt-5">
                         <Col md={{ span: 3, offset: 3}} className="align-items-center d-flex justify-content-center">
-                            <Button variant="warning" className="btn-fill" type="reset">Cancel</Button>
+                            <Button variant="warning" className="btn-fill" type="button">Cancel</Button>
                         </Col>
                         <Col md={{ span: 3}} className="align-items-center d-flex justify-content-center">
                             <Button variant="primary" className="btn-fill" type="submit">Upload</Button>
                         </Col>
                     </Row>
                   </Form>
+                  <NotificationContainer/>
                 </Col>
             </Row>
         </Container>
@@ -184,6 +281,8 @@ const mapStateToProps = state => ({
     "value" : d.id,
     "label" : d.name
   })),
+  token: state.auth.access.token,
+  dealership: state.auth.user.dealership,
 });
 
 export default connect(mapStateToProps)(AddRepairOrder);
