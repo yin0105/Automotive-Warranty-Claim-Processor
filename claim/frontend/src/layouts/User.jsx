@@ -1,16 +1,7 @@
 
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-
-// import Footer from "components/Footer/Footer.jsx";
-// import AuthNavbar from "components/Navbars/AuthNavbar.jsx";
-
-// dinamically create pages routes
 import routes from "routes.js";
-
-// import bgImage from "assets/img/full-screen-image-3.jpg";
-// import bgImage from "assets/img/pexels-iconcom-733174.jpg";
-import bgImage from "assets/img/pexels-lumn-295771.jpg";
 
 
 class UserPages extends Component {
@@ -21,20 +12,6 @@ class UserPages extends Component {
   }
   getPageClass() {
     var pageClass = "";
-    // switch (this.props.location.pathname) {
-    //   case "/frontend/auth/login-page":
-    //     pageClass = " login-page";
-    //     break;
-    //   case "/frontend/auth/register-page":
-    //     pageClass = " login-page register-page";
-    //     break;
-    //   case "/frontend/auth/lock-screen-page":
-    //     pageClass = " lock-page";
-    //     break;
-    //   default:
-    //     pageClass = "";
-    //     break;
-    // }
     return pageClass;
   }
   getRoutes = routes => {
@@ -58,24 +35,12 @@ class UserPages extends Component {
   render() {
     return (
       <div>
-        {/* <AuthNavbar /> */}
         <div className="wrapper wrapper-full-page">
-          {/* <div
-            className={"full-page" + this.getPageClass()}
-            data-color="black"
-            data-image={bgImage}
-          > */}
             <div className="content">
               <Switch>{this.getRoutes(routes)}</Switch>
             </div>
-            {/* <Footer transparent /> */}
-            {/* <div
-              className="full-page-background"
-              style={{ backgroundImage: "url(" + bgImage + ")" }}
-            /> */}
           </div>
         </div>
-      // </div>
     );
   }
 }

@@ -1,20 +1,11 @@
 
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-// this is used to create scrollbars on windows devices like the ones from apple devices
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-// react component that creates notifications (like some alerts with messages)
-
 import Sidebar from "components/Sidebar/Sidebar.jsx";
-
 import image from "assets/img/full-screen-image-3.jpg";
-
-// dinamically create dashboard routes
 import routes from "routes.js";
-
-// style for notifications
-import { style } from "variables/Variables.jsx";
 
 var ps;
 
@@ -66,7 +57,6 @@ class DealershipDashboard extends Component {
       document.documentElement.classList.toggle("nav-open");
     }
   }
-  // function that shows/hides notifications - it was put here, because the wrapper div has to be outside the main-panel class div
   handleNotificationClick = position => {
     var color = Math.floor(Math.random() * 4 + 1);
     var level;
@@ -148,7 +138,6 @@ class DealershipDashboard extends Component {
   render() {
     return (
       <div className="wrapper">
-        {/* <NotificationSystem ref="notificationSystem" style={style} /> */}
         <Sidebar
           {...this.props}
           image={this.state.image}
@@ -165,26 +154,8 @@ class DealershipDashboard extends Component {
               : "")
           }
           ref="mainPanel"
-        >
-          {/* <AdminNavbar
-            {...this.props}
-            handleMiniClick={this.handleMiniClick}
-            navbar={this.state.navbar}
-          /> */}
+        >          
           <Switch>{this.getRoutes(routes)}</Switch>
-          {/* <Footer fluid />
-          <FixedPlugin
-            handleImageClick={this.handleImageClick}
-            handleColorClick={this.handleColorClick}
-            handleHasImage={this.handleHasImage}
-            handleNavbarClick={this.handleNavbarClick}
-            handleMiniClick={this.handleMiniClick}
-            bgColor={this.state["color"]}
-            bgImage={this.state["image"]}
-            mini={this.state["mini"]}
-            handleFixedClick={this.handleFixedClick}
-            fixedClasses={this.state.fixedClasses}
-          /> */}
         </div>
       </div>
     );
