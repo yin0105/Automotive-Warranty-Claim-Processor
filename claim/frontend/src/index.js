@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/sass/light-bootstrap-dashboard-pro-react.scss?v=1.2.0";
@@ -18,7 +18,6 @@ import {Provider} from 'react-redux';
 import {store, persistor, history} from './redux/store.jsx';
 import ReduxToastr from 'react-redux-toastr'
 
-// import CollectionList from "views/Collections/CollectionList"
 
 const TITLE = 'Claim Manage App';
 
@@ -41,41 +40,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
-// ReactDOM.render(
-//   <Provider store={store}>
-//     <Router>
-//       <Layout>
-//         <Switch>
-//           <Route path="/auth" render={props => <AuthLayout {...props} />} />
-//           <Route path="/admin" render={props => <AdminLayout {...props} />} />
-//           <Route path="/user" render={props => <UserLayout {...props} />} />
-//           {/* <Route path="/add_collection" render={props => <CollectionList {...props} />} /> */}
-//           <Redirect from="/" to="/frontend/admin/dashboard" />
-//         </Switch>
-//       </Layout>
-//     </Router>
-//   </Provider>, document.getElementById("root")
-//                 {/* <Switch>
-//                     <Route exact path='/' component={Home} />
-//                     <Route exact path='/login' component={Login} />
-//                     <Route exact path='/signup' component={Signup} />
-//                     <Route exact path='/facebook' component={Facebook} />
-//                     <Route exact path='/google' component={Google} />
-//                     <Route exact path='/reset-password' component={ResetPassword} />
-//                     <Route exact path='/password/reset/confirm/:uid/:token' component={ResetPasswordConfirm} />
-//                     <Route exact path='/activate/:uid/:token' component={Activate} />
-//                 </Switch> */}
-                
-    
-
-//   {/* <HashRouter>
-//     <Switch>
-//       <Route path="/auth" render={props => <AuthLayout {...props} />} />
-//       <Route path="/admin" render={props => <AdminLayout {...props} />} />
-//       <Route path="/user" render={props => <UserLayout {...props} />} />
-//       <Redirect from="/" to="/frontend/admin/dashboard" />
-//     </Switch>
-//   </HashRouter>, */}
-  
-// );
