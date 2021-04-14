@@ -234,10 +234,10 @@ class ClaimView(APIView):
             file_name = file_path[file_path.rfind(os.path.sep) + 1:]
             print(file_name)
             print(s3_bucket, file_path, posts_serializer.data["dealership"] + "/" + file_name)
-            # try:
-            #     upload_file_to_bucket(s3_bucket, file_path, posts_serializer.data["dealership"] + "/" + file_name)
-            # except :
-            #     print("Upload error")
+            try:
+                upload_file_to_bucket(s3_bucket, file_path, posts_serializer.data["dealership"] + "/" + file_name)
+            except :
+                print("Upload error")
             return Response(posts_serializer.data, status=status.HTTP_201_CREATED)
         else:
             print('error', posts_serializer.errors)

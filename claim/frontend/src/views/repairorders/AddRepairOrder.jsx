@@ -229,7 +229,7 @@ class AddRepairOrder extends React.Component {
                           <Button variant="primary" className="btn-fill" type="submit">Upload</Button>                            
                         </Col>
                         <Col md={{ span: 3}} className="align-items-center d-flex justify-content-center">
-                          <Link to="/frontend/dealership/repair_order" className="mx-auto btn btn-warning btn-fill">Close</Link>
+                          <Link to="/frontend/dealership/dashboard" className="mx-auto btn btn-warning btn-fill">Close</Link>
                         </Col>
                     </Row>
                   </Form>

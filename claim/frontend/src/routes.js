@@ -13,20 +13,20 @@ var routes = [
     category: ["admin",],
     component: ScheduleStatus
   },  
+  // {
+  //   path: "/dashboard",
+  //   layout: "/frontend/dealership",
+  //   name: "Dashboard",
+  //   icon: "pe-7s-graph",
+  //   category: ["dealership",],
+  //   component: ScheduleStatus
+  // },
+
   {
     path: "/dashboard",
     layout: "/frontend/dealership",
     name: "Dashboard",
     icon: "pe-7s-graph",
-    category: ["dealership",],
-    component: ScheduleStatus
-  },
-
-  {
-    path: "/repair_order",
-    layout: "/frontend/dealership",
-    name: "Upload Repair Order",
-    icon: "pe-7s-note2",
     category: ["dealership",],
     component: RepairOrderList
   },
