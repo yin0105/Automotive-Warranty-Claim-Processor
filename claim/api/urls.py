@@ -11,6 +11,7 @@ urlpatterns = [
   # path('get_claims', views.get_claims),
   # path('get_claims_dealership/<dealership_name>', views.get_claims_dealership),
   path('claim/', views.ClaimView.as_view(), name= 'claim_list'),
+  path('download_pdf', views.download_pdf),
   # path('add_dealership', views.add_dealership),
 #   path('updatebook/<int:book_id>', views.update_book),
 #   path('deletebook/<int:book_id>', views.delete_book)

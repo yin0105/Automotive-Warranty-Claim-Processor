@@ -23,6 +23,11 @@ from dotenv import load_dotenv
 import boto3
 from botocore.exceptions import ClientError
 
+import requests
+import os
+from http.client import HTTPResponse
+from django.http import HttpResponseRedirect
+
 
 
 cur_path = dirname(__file__)
@@ -242,6 +247,35 @@ class ClaimView(APIView):
         else:
             print('error', posts_serializer.errors)
             return Response(posts_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+@csrf_exempt
+# @permission_classes([IsAuthenticated])
+def download_pdf(request):
+    dealership = request.GET["dealership"]
+    pdf = request.GET["pdf"]
+    
+    # dealership ="d-2"
+    # pdf = "Kinechek-1in_stroke.pdf"
+
+    session = aws_session()
+    s3 = session.client('s3')
+
+    url = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'Bucket': s3_bucket,
+            'Key': dealership + "/" + pdf
+        },
+    )
+    print("url = ", url)
+
+    # response_headers = {
+    # 'response-content-type': 'application/force-download',
+    # 'response-content-disposition':'attachment;filename="%s"'% pdf
+    # }
+    # return HttpResponseRedirect(url) 
+    return JsonResponse({'url': url}, safe=False, status=status.HTTP_200_OK)           
 
 #     repair_order = models.IntegerField( help_text='Enter Repair Order Number')
 #     pdf = models.CharField( max_length=100, verbose_name='PDF file name' )

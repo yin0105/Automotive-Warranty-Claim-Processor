@@ -37,6 +37,21 @@ class RepairOrderList extends Component {
     
   }
 
+  handleDownloadPDF = pdf => {
+    const headers = { 
+      'Authorization': 'token ' + this.props.token,
+    };
+    axios.get('/api/claim/download_pdf?dealership=' + this.props.dealership + '&pdf=' + pdf, {headers})
+      .then(res => {
+        console.log("res = ", res)
+        console.log("res.data.url = ", res.data.url)
+        window.open(res.data.url, "_blank");
+        console.log("download: OK");
+      })
+
+
+  }
+
   render() {
     const edit = <Tooltip id="edit">Edit Schedule</Tooltip>;
     const remove = <Tooltip id="remove">Remove</Tooltip>;
@@ -88,7 +103,11 @@ class RepairOrderList extends Component {
                           <td>{claim.submission_type}</td>
                           <td>{claim.service_advisor}</td>
                           <td>{claim.technician}</td>
-                          <td>{claim.pdf.substring(claim.pdf.lastIndexOf("/")+1, claim.pdf.length)}</td>
+                          <td>
+                            <Link onClick={() => this.handleDownloadPDF(claim.pdf.substring(claim.pdf.lastIndexOf("/")+1, claim.pdf.length))}>
+                              {claim.pdf.substring(claim.pdf.lastIndexOf("/")+1, claim.pdf.length)}                              
+                            </Link>
+                          </td>
                           <td>{Moment(claim.upload_date).format('MMMM Do YYYY, hh:mm:ss a')}</td>
                           {/* {actions} */}
                         </tr>
