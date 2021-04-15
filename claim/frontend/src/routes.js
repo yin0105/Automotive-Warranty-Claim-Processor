@@ -1,6 +1,6 @@
 import LoginPage from "views/Pages/LoginPage.jsx";
 import LogoutPage from "views/Pages/LogoutPage.jsx";
-import ScheduleStatus from "views/Schedules/ScheduleStatus";
+import RepairOrderListAdmin from "views/RepairOrders/RepairOrderListAdmin";
 import RepairOrderList from "views/RepairOrders/RepairOrderList";
 import AddRepairOrder from "views/RepairOrders/AddRepairOrder";
 
@@ -11,7 +11,7 @@ var routes = [
     name: "Dashboard",
     icon: "pe-7s-graph",
     category: ["admin",],
-    component: ScheduleStatus
+    component: RepairOrderListAdmin
   },  
   // {
   //   path: "/dashboard",
