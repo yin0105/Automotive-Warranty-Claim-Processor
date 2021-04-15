@@ -29,6 +29,7 @@ class TechnicianSerializer(serializers.ModelSerializer):
 
 
 class ClaimSerializer(serializers.ModelSerializer):
+    print("############ Serialize ")
     pdf = serializers.FileField()
     # upload_date = DateTimeField()
     class Meta:

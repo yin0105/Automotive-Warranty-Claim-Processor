@@ -14,8 +14,6 @@ class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         user = self.request.user
         groups = Group.objects.filter(user=user.id)
-        print("# permissions #############")
-        print([p for p in groups])
         if len(groups) == 0 or not user.role in [g.name for g in groups]:
             if (len(groups) != 0):
                 user.groups.clear()

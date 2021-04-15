@@ -122,7 +122,7 @@ class AddRepairOrder extends React.Component {
     
     
     form_data.append('dealership', this.props.dealership);
-    let url = 'http://localhost:8000/api/claim/claim/';
+    let url = '/api/claim/claim/';
     axios.post(url, form_data, {
       headers: {
         // 'content-type': 'multipart/form-data',

@@ -28,7 +28,7 @@ class RepairOrderList extends Component {
       const headers = { 
         'Authorization': 'token ' + this.props.token,
       };
-      axios.get('http://localhost:8000/api/claim/claim/?dealership=' + this.props.dealership, {headers})
+      axios.get('/api/claim/claim/?dealership=' + this.props.dealership, {headers})
         .then(res => {
           const claims = res.data;
           this.setState({ claims });

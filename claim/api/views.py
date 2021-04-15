@@ -192,6 +192,7 @@ class ClaimView(APIView):
     parser_class = (PdfUploadParser,)
 
     def put(self, request, format=None):
+        print("############ put ")
         if 'file' not in request.data:
             raise ParseError("Empty content")
 
@@ -217,25 +218,24 @@ class ClaimView(APIView):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
+        print("############ post ")
         posts_serializer = ClaimSerializer(data=request.data)
         if posts_serializer.is_valid():
             posts_serializer.save()
             print(posts_serializer.data["pdf"])
             pdf = posts_serializer.data["pdf"]
-            pdf = pdf[pdf.rfind("/")+1:]
-            print(pdf)
+            file_name = pdf[pdf.rfind("/")+1:]
+            print("file_name = ", file_name)
 
             # Upload to S3 Bucket
-            file_path = join(root_path, pdf)
+            file_path = join(root_path, "pdf_folder", file_name)
             print("#"*50)
             print(os.path.sep)
             print(root_path, file_path)
             print(str(file_path.rfind(os.path.sep)))
-            file_name = file_path[file_path.rfind(os.path.sep) + 1:]
-            print(file_name)
-            print(s3_bucket, file_path, posts_serializer.data["dealership"] + "/" + file_name)
+            print(file_path, posts_serializer.data["dealership"])
             try:
-                upload_file_to_bucket(s3_bucket, file_path, posts_serializer.data["dealership"] + "/" + file_name)
+                upload_file_to_bucket(file_path, posts_serializer.data["dealership"])
             except :
                 print("Upload error")
             return Response(posts_serializer.data, status=status.HTTP_201_CREATED)
