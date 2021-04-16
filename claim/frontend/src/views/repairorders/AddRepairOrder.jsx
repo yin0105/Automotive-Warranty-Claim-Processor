@@ -17,6 +17,7 @@ import FileUpload from "views/Components/FileUpload"
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import 'react-notifications/dist/react-notifications'
+import { loadFromLocalStorage } from 'redux/reducers/auth'
 
 
 // const options = [
@@ -42,6 +43,27 @@ class AddRepairOrder extends React.Component {
       },
       alert: '',
     }
+  }
+
+  componentDidMount() {
+    this.props.claim_types = loadFromLocalStorage("claim_types").map(d => ({
+          "value" : d.name,
+          "label" : d.name
+        }));
+    this.props.submission_types= loadFromLocalStorage("submission_types").map(d => ({
+          "value" : d.name,
+          "label" : d.name
+        }));
+    this.props.service_advisors = loadFromLocalStorage("service_advisors").map(d => ({
+          "value" : d.id,
+          "label" : d.name
+        }));
+    this.props.technicians = loadFromLocalStorage("technicians").map(d => ({
+          "value" : d.id,
+          "label" : d.name
+        }));
+    this.props.token = loadFromLocalStorage("token");
+    this.props.dealership = loadFromLocalStorage("user").dealership;
   }
 
   handleClaimTypeChange = (claim_type) => {
@@ -242,25 +264,4 @@ class AddRepairOrder extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  claim_types: state.auth.claim_types.claim_types.map(d => ({
-    "value" : d.name,
-    "label" : d.name
-  })),
-  submission_types: state.auth.submission_types.submission_types.map(d => ({
-    "value" : d.name,
-    "label" : d.name
-  })),
-  service_advisors: state.auth.service_advisors.service_advisor.map(d => ({
-    "value" : d.id,
-    "label" : d.name
-  })),
-  technicians: state.auth.technicians.technicians.map(d => ({
-    "value" : d.id,
-    "label" : d.name
-  })),
-  token: state.auth.access.token,
-  dealership: state.auth.user.dealership,
-});
-
-export default connect(mapStateToProps)(AddRepairOrder);
+export default AddRepairOrder;

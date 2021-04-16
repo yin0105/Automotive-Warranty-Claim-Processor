@@ -20,6 +20,8 @@ import { login, getUserInfo, getBasicData } from 'redux/actions/auth.jsx';
 import {connect} from "react-redux";
 import AuthHelper from 'helpers/authHelper.jsx';
 import {validateEmail} from 'helpers/commonHelper.jsx';
+import { saveToLocalStorage, loadFromLocalStorage } from 'redux/reducers/auth'
+import axios from 'axios'
 
 class LoginPage extends Component {
   constructor(props) {
@@ -38,7 +40,19 @@ class LoginPage extends Component {
         this.setState({ cardHidden: false });
       }.bind(this),
       700
-    );    
+    );  
+    
+    // setTimeout(() => {
+    //   console.log("token = ", this.props.token)
+    //   const headers = { 
+    //     'Authorization': 'token ' + this.props.token,
+    //   };
+    //   axios.get('/api/claim/claim/?dealership=' + this.props.dealership, {headers})
+    //     .then(res => {
+    //       const claims = res.data;
+    //       this.setState({ claims });
+    //     })
+    // }, 100);
   }
 
   handleLogin = e => {
@@ -71,20 +85,48 @@ class LoginPage extends Component {
 
     this.props.login(email, password)
       .then(
-        () => {
-          // Get Basic Data (claim types, submission types, service advisors, technicians)
-          this.props.get_basic_data()
-            .then(
-              () => {
-                console.log("############ get_basic_data() :: Success");
-                // Get User Information                
-              }
-            ).catch(
-              err => {
-                console.log("Get Basic Data Error");
-              }
-
+        res => {
+          // saveToLocalStorage("token", )
+          console.log("%%%%%%%%%%%%%%%%%%%%%% ", loadFromLocalStorage("token"));
+          const token = loadFromLocalStorage("token");
+          const headers = { 
+            'Authorization': 'token ' + token,
+          };
+          axios.get('/api/claim/get_claim_types', {headers})
+            .then(res => {
+              console.log("res = ", res)
+              saveToLocalStorage("claim_types", res.data.claim_types)
+            }).catch(
+              console.log("get_claim_types Error")
             );
+          axios.get('/api/claim/get_submission_types', {headers})
+            .then(res => {
+              console.log(res.data.submission_types)
+              saveToLocalStorage("submission_types", res.data.submission_types)
+            });
+          axios.get('/api/claim/get_service_advisors', {headers})
+            .then(res => {
+              console.log(res.data.service_advisor)
+              saveToLocalStorage("service_advisors", res.data.service_advisor)
+            });
+          axios.get('/api/claim/get_technicians', {headers})
+            .then(res => {
+              console.log(res.data.technicians)
+              saveToLocalStorage("technicians", res.data.technicians)
+            });
+
+          // this.props.get_basic_data()
+          //   .then(
+          //     () => {
+          //       console.log("############ get_basic_data() :: Success");
+          //       // Get User Information                
+          //     }
+          //   ).catch(
+          //     err => {
+          //       console.log("Get Basic Data Error");
+          //     }
+
+          //   );
 
           this.props.get_userinfo()
             .then(

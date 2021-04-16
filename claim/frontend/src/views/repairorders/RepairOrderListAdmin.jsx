@@ -15,14 +15,33 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import {connect} from "react-redux"
 import axios from 'axios'
 import Moment from 'moment';
-// import DateTime from "react-intl-datetime-format"
+import { loadFromLocalStorage } from 'redux/reducers/auth'
 
 class RepairOrderListAdmin extends Component {
   state = {
     claims: []
   }
 
-  componentDidMount() {
+  componentDidMount() {    
+    this.props.claim_types = loadFromLocalStorage("claim_types").map(d => ({
+          "value" : d.name,
+          "label" : d.name
+        }));
+    this.props.submission_types= loadFromLocalStorage("submission_types").map(d => ({
+          "value" : d.name,
+          "label" : d.name
+        }));
+    this.props.service_advisors = loadFromLocalStorage("service_advisors").map(d => ({
+          "value" : d.id,
+          "label" : d.name
+        }));
+    this.props.technicians = loadFromLocalStorage("technicians").map(d => ({
+          "value" : d.id,
+          "label" : d.name
+        }));
+    this.props.token = loadFromLocalStorage("token");
+    this.props.dealership = loadFromLocalStorage("user").dealership;
+
     setTimeout(() => {
       console.log("token = ", this.props.token)
       const headers = { 
@@ -34,7 +53,6 @@ class RepairOrderListAdmin extends Component {
           this.setState({ claims });
         })
     }, 100);
-    
   }
 
   handleDownloadPDF = (pdf, dealership) => {
@@ -126,27 +144,4 @@ class RepairOrderListAdmin extends Component {
   }
 }
 
-// export default RepairOrderListAdmin;
-
-const mapStateToProps = state => ({
-  claim_types: state.auth.claim_types.claim_types.map(d => ({
-    "value" : d.name,
-    "label" : d.name
-  })),
-  submission_types: state.auth.submission_types.submission_types.map(d => ({
-    "value" : d.name,
-    "label" : d.name
-  })),
-  service_advisors: state.auth.service_advisors.service_advisor.map(d => ({
-    "value" : d.id,
-    "label" : d.name
-  })),
-  technicians: state.auth.technicians.technicians.map(d => ({
-    "value" : d.id,
-    "label" : d.name
-  })),
-  token: state.auth.access.token,
-  dealership: state.auth.user.dealership,
-});
-
-export default connect(mapStateToProps)(RepairOrderListAdmin);
+export default RepairOrderListAdmin;
