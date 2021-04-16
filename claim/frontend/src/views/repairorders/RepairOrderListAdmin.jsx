@@ -22,44 +22,22 @@ class RepairOrderListAdmin extends Component {
     claims: []
   }
 
-  componentDidMount() {    
-    this.props.claim_types = loadFromLocalStorage("claim_types").map(d => ({
-          "value" : d.name,
-          "label" : d.name
-        }));
-    this.props.submission_types= loadFromLocalStorage("submission_types").map(d => ({
-          "value" : d.name,
-          "label" : d.name
-        }));
-    this.props.service_advisors = loadFromLocalStorage("service_advisors").map(d => ({
-          "value" : d.id,
-          "label" : d.name
-        }));
-    this.props.technicians = loadFromLocalStorage("technicians").map(d => ({
-          "value" : d.id,
-          "label" : d.name
-        }));
-    this.props.token = loadFromLocalStorage("token");
-    this.props.dealership = loadFromLocalStorage("user").dealership;
+  token = loadFromLocalStorage("token");
+  dealership = loadFromLocalStorage("user").dealership;
+  headers = { 
+    'Authorization': 'token ' + this.token,
+  };
 
-    setTimeout(() => {
-      console.log("token = ", this.props.token)
-      const headers = { 
-        'Authorization': 'token ' + this.props.token,
-      };
-      axios.get('/api/claim/claim/', {headers})
+  componentDidMount() {
+    axios.get('/api/claim/claim/', {'headers': this.headers})
         .then(res => {
           const claims = res.data;
           this.setState({ claims });
-        })
-    }, 100);
+        });
   }
 
   handleDownloadPDF = (pdf, dealership) => {
-    const headers = { 
-      'Authorization': 'token ' + this.props.token,
-    };
-    axios.get('/api/claim/download_pdf?dealership=' + dealership + '&pdf=' + pdf, {headers})
+    axios.get('/api/claim/download_pdf?dealership=' + dealership + '&pdf=' + pdf, {'headers': this.headers})
       .then(res => {
         console.log("res = ", res)
         console.log("res.data.url = ", res.data.url)

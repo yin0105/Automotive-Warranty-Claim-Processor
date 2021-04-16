@@ -31,8 +31,8 @@ class AddRepairOrder extends React.Component {
     super(props)
     this.state = {
       repair_order: null,
-      pdf: null,
-      dealership: null,
+      // pdf: null,
+      // dealership: null,
       claim_type: null,
       submission_type: null,
       service_advisor: null,
@@ -42,29 +42,22 @@ class AddRepairOrder extends React.Component {
         profileImages: null
       },
       alert: '',
+      // submission_types: []
     }
+    // this.props = {
+    //   ...this.props,
+    //   claim_types: [],
+    //   service_advisors: [],
+    // }
+
   }
 
-  componentDidMount() {
-    this.props.claim_types = loadFromLocalStorage("claim_types").map(d => ({
-          "value" : d.name,
-          "label" : d.name
-        }));
-    this.props.submission_types= loadFromLocalStorage("submission_types").map(d => ({
-          "value" : d.name,
-          "label" : d.name
-        }));
-    this.props.service_advisors = loadFromLocalStorage("service_advisors").map(d => ({
-          "value" : d.id,
-          "label" : d.name
-        }));
-    this.props.technicians = loadFromLocalStorage("technicians").map(d => ({
-          "value" : d.id,
-          "label" : d.name
-        }));
-    this.props.token = loadFromLocalStorage("token");
-    this.props.dealership = loadFromLocalStorage("user").dealership;
-  }
+  claim_types = loadFromLocalStorage("claim_types")
+  submission_types= loadFromLocalStorage("submission_types")
+  service_advisors = loadFromLocalStorage("service_advisors")
+  technicians = loadFromLocalStorage("technicians")
+  token = loadFromLocalStorage("token");
+  dealership = loadFromLocalStorage("user").dealership;
 
   handleClaimTypeChange = (claim_type) => {
     this.setState({ claim_type });
@@ -143,12 +136,12 @@ class AddRepairOrder extends React.Component {
     }
     
     
-    form_data.append('dealership', this.props.dealership);
+    form_data.append('dealership', this.dealership);
     let url = '/api/claim/claim/';
     axios.post(url, form_data, {
       headers: {
         // 'content-type': 'multipart/form-data',
-        'Authorization': 'token ' + this.props.token,
+        'Authorization': 'token ' + this.token,
       }
     }).then(res => {
       console.log("Insert Claim ::", res.data);
@@ -185,6 +178,7 @@ class AddRepairOrder extends React.Component {
 
   render() {
     const { claim_type, submission_type, service_advisor, technician, repair_order } = this.state;
+    console.log("$$$$$$$$$$$$$$$$$$$$$ claim_types = ", this.claim_types)
     return (
       <div className="main-content">
         <Container fluid className="repair_order">
@@ -207,7 +201,7 @@ class AddRepairOrder extends React.Component {
                             <FormLabel>Claim Type : </FormLabel>
                         </Col>
                         <Col md={{ span:7 }}>
-                            <Select options={this.props.claim_types} value={claim_type} onChange={this.handleClaimTypeChange}/>
+                            <Select options={this.claim_types} value={claim_type} onChange={this.handleClaimTypeChange}/>
                         </Col>
                     </Row>
                     <Row>
@@ -215,7 +209,7 @@ class AddRepairOrder extends React.Component {
                             <FormLabel>Submission Type : </FormLabel>
                         </Col>
                         <Col md={{ span:7 }}>
-                            <Select options={this.props.submission_types} value={submission_type} onChange={this.handleSubmissionTypeChange}/>
+                            <Select options={this.submission_types} value={submission_type} onChange={this.handleSubmissionTypeChange}/>
                         </Col>
                     </Row>
                     <Row>
@@ -223,7 +217,7 @@ class AddRepairOrder extends React.Component {
                             <FormLabel>Service Advisor : </FormLabel>
                         </Col>
                         <Col md={{ span:7 }}>
-                            <Select options={this.props.service_advisors} value={service_advisor} onChange={this.handleServiceAdvisorChange}/>
+                            <Select options={this.service_advisors} value={service_advisor} onChange={this.handleServiceAdvisorChange}/>
                         </Col>
                     </Row>
                     <Row>
@@ -231,7 +225,7 @@ class AddRepairOrder extends React.Component {
                             <FormLabel>Technician : </FormLabel>
                         </Col>
                         <Col md={{ span:7 }}>
-                            <Select options={this.props.technicians} value={technician} onChange={this.handleTechnicianChange}/>
+                            <Select options={this.technicians} value={technician} onChange={this.handleTechnicianChange}/>
                         </Col>
                     </Row>
                     <Row>

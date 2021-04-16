@@ -23,32 +23,26 @@ class RepairOrderList extends Component {
     claims: []
   }
 
+  // claim_types = loadFromLocalStorage("claim_types")
+  // submission_types= loadFromLocalStorage("submission_types")
+  // service_advisors = loadFromLocalStorage("service_advisors")
+  // technicians = loadFromLocalStorage("technicians")
+  token = loadFromLocalStorage("token");
+  dealership = loadFromLocalStorage("user").dealership;
+  headers = { 
+    'Authorization': 'token ' + this.token,
+  };
+
   componentDidMount() {
-    this.props.claim_types = loadFromLocalStorage("claim_types").map(d => ({
-          "value" : d.name,
-          "label" : d.name
-        }));
-    this.props.submission_types= loadFromLocalStorage("submission_types").map(d => ({
-          "value" : d.name,
-          "label" : d.name
-        }));
-    this.props.service_advisors = loadFromLocalStorage("service_advisors").map(d => ({
-          "value" : d.id,
-          "label" : d.name
-        }));
-    this.props.technicians = loadFromLocalStorage("technicians").map(d => ({
-          "value" : d.id,
-          "label" : d.name
-        }));
-    this.props.token = loadFromLocalStorage("token");
-    this.props.dealership = loadFromLocalStorage("user").dealership;
+    axios.get('/api/claim/claim/?dealership=' + this.dealership, {'headers': this.headers})
+        .then(res => {
+          const claims = res.data;
+          this.setState({ claims });
+        });
   }
 
   handleDownloadPDF = pdf => {
-    const headers = { 
-      'Authorization': 'token ' + this.props.token,
-    };
-    axios.get('/api/claim/download_pdf?dealership=' + this.props.dealership + '&pdf=' + pdf, {headers})
+    axios.get('/api/claim/download_pdf?dealership=' + this.dealership + '&pdf=' + pdf, {'headers': this.headers})
       .then(res => {
         console.log("res = ", res)
         console.log("res.data.url = ", res.data.url)

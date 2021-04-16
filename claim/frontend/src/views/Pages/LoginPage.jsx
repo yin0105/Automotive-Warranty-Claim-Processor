@@ -85,50 +85,44 @@ class LoginPage extends Component {
 
     this.props.login(email, password)
       .then(
-        res => {
+        async(res) => {
           // saveToLocalStorage("token", )
           console.log("%%%%%%%%%%%%%%%%%%%%%% ", loadFromLocalStorage("token"));
           const token = loadFromLocalStorage("token");
           const headers = { 
             'Authorization': 'token ' + token,
           };
-          axios.get('/api/claim/get_claim_types', {headers})
+            
+          await axios.get('/api/claim/get_claim_types', {headers})
             .then(res => {
-              console.log("res = ", res)
-              saveToLocalStorage("claim_types", res.data.claim_types)
-            }).catch(
-              console.log("get_claim_types Error")
-            );
-          axios.get('/api/claim/get_submission_types', {headers})
+              saveToLocalStorage("claim_types", res.data.claim_types.map(d => ({
+                "value" : d.name,
+                "label" : d.name
+              })))
+            })
+          await axios.get('/api/claim/get_submission_types', {headers})
             .then(res => {
-              console.log(res.data.submission_types)
-              saveToLocalStorage("submission_types", res.data.submission_types)
+              saveToLocalStorage("submission_types", res.data.submission_types.map(d => ({
+                "value" : d.name,
+                "label" : d.name
+              })))
             });
-          axios.get('/api/claim/get_service_advisors', {headers})
+          await axios.get('/api/claim/get_service_advisors', {headers})
             .then(res => {
-              console.log(res.data.service_advisor)
-              saveToLocalStorage("service_advisors", res.data.service_advisor)
+              saveToLocalStorage("service_advisors", res.data.service_advisor.map(d => ({
+                "value" : d.id,
+                "label" : d.name
+              })))
             });
-          axios.get('/api/claim/get_technicians', {headers})
+          await axios.get('/api/claim/get_technicians', {headers})
             .then(res => {
-              console.log(res.data.technicians)
-              saveToLocalStorage("technicians", res.data.technicians)
+              saveToLocalStorage("technicians", res.data.technicians.map(d => ({
+                "value" : d.id,
+                "label" : d.name
+              })))
             });
 
-          // this.props.get_basic_data()
-          //   .then(
-          //     () => {
-          //       console.log("############ get_basic_data() :: Success");
-          //       // Get User Information                
-          //     }
-          //   ).catch(
-          //     err => {
-          //       console.log("Get Basic Data Error");
-          //     }
-
-          //   );
-
-          this.props.get_userinfo()
+          await this.props.get_userinfo()
             .then(
               () => {
                 console.log("######## get_userinfo() :: Success");
@@ -220,7 +214,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
   login: (username, password) => dispatch(login(username, password)),
   get_userinfo: () => dispatch(getUserInfo()),
-  get_basic_data: () => dispatch(getBasicData()),
+  // get_basic_data: () => dispatch(getBasicData()),
 });
 
 
