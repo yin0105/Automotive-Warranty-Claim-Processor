@@ -5,7 +5,7 @@ import RepairOrderList from "views/RepairOrders/RepairOrderList";
 import AddRepairOrder from "views/RepairOrders/AddRepairOrder";
 import { loadFromLocalStorage } from 'redux/reducers/auth'
 
-var routes = [
+export const routes = [
   {
     path: "/dashboard/archive",
     layout: "/frontend/admin",
@@ -48,7 +48,7 @@ var routes = [
   },
 ];
 
-const routes_head = loadFromLocalStorage('dealerships').map(d => ({
+export const admin_routes = loadFromLocalStorage('dealerships')?.map(d => ({
   path: "/dashboard/" + d.name,
   layout: "/frontend/admin",
   key: d.name,
@@ -56,6 +56,5 @@ const routes_head = loadFromLocalStorage('dealerships').map(d => ({
   icon: "pe-7s-graph",
   category: ["admin",],
   component: RepairOrderListAdmin
-}))
-routes = routes_head.concat(routes);
-export default routes;
+})).concat(routes);
+

@@ -5,7 +5,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import image from "assets/img/full-screen-image-3.jpg";
-import routes from "routes.js";
+import {routes, admin_routes} from "routes.js";
 
 var ps;
 

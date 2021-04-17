@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import routes from "routes.js";
+import {routes, admin_routes} from "routes.js";
 
 
 class UserPages extends Component {

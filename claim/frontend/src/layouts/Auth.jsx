@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import routes from "routes.js";
+import {routes, admin_routes} from "routes.js";
 import bgImage from "assets/img/pexels-lumn-295771.jpg";
 
 
@@ -30,7 +30,7 @@ class Pages extends Component {
     return pageClass;
   }
   getRoutes = routes => {
-    return routes.map((prop, key) => {
+    return routes?.map((prop, key) => {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }

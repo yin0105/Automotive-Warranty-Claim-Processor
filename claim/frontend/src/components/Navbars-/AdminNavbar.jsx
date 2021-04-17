@@ -8,7 +8,7 @@ import AdminNavbarLinks from "./AdminNavbarLinks.jsx";
 
 // we import here the routes for dashboard pages (links that appear in sidebar) to set navbar's name
 
-import routes from "routes.js";
+import {routes, admin_routes} from "routes.js";
 
 class AdminNavbar extends Component {
   getActiveRoute = routes => {

@@ -14,7 +14,7 @@ import avatar from "assets/img/default-avatar.png";
 // logo for sidebar
 import logo from "logo.svg";
 
-import routes from "routes.js";
+import {routes, admin_routes} from "routes.js";
 
 var ps;
 
@@ -58,10 +58,11 @@ class Sidebar extends Component {
     return false;
   }
   // this function creates the links and collapses that appear in the sidebar (left menu)
-  createLinks = routes => {
+  cur_routes = this.props.category=="admin"? admin_routes: routes;
+  createLinks = (cur_routes) => {
     // const category = this.state.path.split("/")[1];
     // console.log("category => ", category);
-    return routes.map((prop, key) => {
+    return cur_routes.map((prop, key) => {
       console.log("this.props.category => ", this.props.category);
       console.log("prop.category =>", prop.category);
       if (!prop.category.includes(this.props.category)) {
@@ -247,7 +248,7 @@ class Sidebar extends Component {
               we make a simple link, if not, we have to create a collapsible group,
               with the speciffic parent button and with it's children which are the links
             */}
-            {this.createLinks(routes)}
+            {this.createLinks(this.cur_routes)}
           </ul>
         </div>
       </div>

@@ -5,7 +5,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import image from "assets/img/full-screen-image-3.jpg";
-import routes from "routes.js";
+import { routes, admin_routes } from "routes.js";
 
 var ps;
 
@@ -112,8 +112,10 @@ class DealershipDashboard extends Component {
       this.setState({ fixedClasses: "dropdown" });
     }
   };
-  getRoutes = routes => {
-    return routes.map((prop, key) => {
+  
+  getRoutes = admin_routes => {
+    console.log("admin_routes = ", admin_routes)
+    return admin_routes?.map((prop, key) => {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
@@ -155,7 +157,7 @@ class DealershipDashboard extends Component {
           }
           ref="mainPanel"
         >          
-          <Switch>{this.getRoutes(routes)}</Switch>
+          <Switch>{this.getRoutes(admin_routes)}</Switch>
         </div>
       </div>
     );

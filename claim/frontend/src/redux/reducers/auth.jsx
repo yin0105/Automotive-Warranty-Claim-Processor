@@ -44,7 +44,7 @@ export default (state = initialState, action) => {
     case auth.GET_SUBMISSION_TYPE_LIST_FAILURE:
     case auth.GET_SERVICE_ADVISOR_LIST_FAILURE:
     case auth.GET_TECHNICIAN_LIST_FAILURE: 
-      localStorage.clear();   
+      // localStorage.clear();   
       return initialState;
 
     case auth.GET_USER_INFO_SUCCESS:
