@@ -31,8 +31,6 @@ class AddRepairOrder extends React.Component {
     super(props)
     this.state = {
       repair_order: null,
-      // pdf: null,
-      // dealership: null,
       claim_type: null,
       submission_type: null,
       service_advisor: null,
@@ -42,14 +40,7 @@ class AddRepairOrder extends React.Component {
         profileImages: null
       },
       alert: '',
-      // submission_types: []
     }
-    // this.props = {
-    //   ...this.props,
-    //   claim_types: [],
-    //   service_advisors: [],
-    // }
-
   }
 
   claim_types = loadFromLocalStorage("claim_types")

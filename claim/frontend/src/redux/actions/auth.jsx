@@ -64,6 +64,7 @@ export const refreshToken = () => (dispatch, getState) => {
 
 export const getUserInfo = () => dispatch => {
   dispatch({type: GET_USER_INFO_REQUEST});
+  console.log("getUserInfo()");
   return AuthHelper.getUserInfo()
     .then(res => {
       dispatch({

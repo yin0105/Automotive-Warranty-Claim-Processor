@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.fields import NullBooleanField
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
-from .serializers import ClaimTypeSerializer, SubmissionTypeSerializer, ServiceAdvisorSerializer, TechnicianSerializer, ClaimSerializer
+from .serializers import ClaimTypeSerializer, SubmissionTypeSerializer, ServiceAdvisorSerializer, TechnicianSerializer, ClaimSerializer, DealershipSerializer
 from .models import ClaimType, Dealership, SubmissionType, ServiceAdvisor, Technician, Claim
 from rest_framework import status
 import os
@@ -134,7 +134,27 @@ def get_technicians(request):
     technicians = Technician.objects.all()
     
     serializer = TechnicianSerializer(technicians, many=True)
-    return JsonResponse({'technicians': serializer.data}, safe=False, status=status.HTTP_200_OK)         
+    return JsonResponse({'technicians': serializer.data}, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+# @permission_classes([IsAuthenticated])
+def get_dealerships(request):
+    dealerships = Dealership.objects.all()
+    
+    serializer = DealershipSerializer(dealerships, many=True)
+    return JsonResponse({'dealerships': serializer.data}, safe=False, status=status.HTTP_200_OK)   
+
+
+@api_view(["GET"])
+@csrf_exempt
+# @permission_classes([IsAuthenticated])
+def get_claim_by_dealership(request):
+    dealerships = Dealership.objects.all()
+    
+    serializer = DealershipSerializer(dealerships, many=True)
+    return JsonResponse({'dealerships': serializer.data}, safe=False, status=status.HTTP_200_OK)                  
 
 
 # @api_view(["POST"])
@@ -269,12 +289,6 @@ def download_pdf(request):
         },
     )
     print("url = ", url)
-
-    # response_headers = {
-    # 'response-content-type': 'application/force-download',
-    # 'response-content-disposition':'attachment;filename="%s"'% pdf
-    # }
-    # return HttpResponseRedirect(url) 
     return JsonResponse({'url': url}, safe=False, status=status.HTTP_200_OK)           
 
 #     repair_order = models.IntegerField( help_text='Enter Repair Order Number')

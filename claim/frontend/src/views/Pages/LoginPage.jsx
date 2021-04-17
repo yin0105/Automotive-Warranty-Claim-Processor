@@ -34,25 +34,14 @@ class LoginPage extends Component {
       }
     };
   }
+  redirectURL = ""
   componentDidMount() {
     setTimeout(
       function() {
         this.setState({ cardHidden: false });
       }.bind(this),
       700
-    );  
-    
-    // setTimeout(() => {
-    //   console.log("token = ", this.props.token)
-    //   const headers = { 
-    //     'Authorization': 'token ' + this.props.token,
-    //   };
-    //   axios.get('/api/claim/claim/?dealership=' + this.props.dealership, {headers})
-    //     .then(res => {
-    //       const claims = res.data;
-    //       this.setState({ claims });
-    //     })
-    // }, 100);
+    ); 
   }
 
   handleLogin = e => {
@@ -87,7 +76,6 @@ class LoginPage extends Component {
       .then(
         async(res) => {
           // saveToLocalStorage("token", )
-          console.log("%%%%%%%%%%%%%%%%%%%%%% ", loadFromLocalStorage("token"));
           const token = loadFromLocalStorage("token");
           const headers = { 
             'Authorization': 'token ' + token,
@@ -100,6 +88,14 @@ class LoginPage extends Component {
                 "label" : d.name
               })))
             })
+          await axios.get('/api/claim/get_dealerships', {headers})
+            .then(res => {
+              console.log("res", res)
+              saveToLocalStorage("dealerships", res.data.dealerships)
+              console.log("rres.data.dealershipses", res.data.dealerships)
+              this.redirectURL = "/frontend/admin/dashboard/" + res.data.dealerships[0].name// + "/?dealership=" + res.data.dealerships[0].name
+              console.log("redirectURL = ", this.redirectURL)
+            });
           await axios.get('/api/claim/get_submission_types', {headers})
             .then(res => {
               saveToLocalStorage("submission_types", res.data.submission_types.map(d => ({
@@ -121,6 +117,8 @@ class LoginPage extends Component {
                 "label" : d.name
               })))
             });
+          
+
 
           await this.props.get_userinfo()
             .then(
@@ -156,7 +154,7 @@ class LoginPage extends Component {
     if (this.props.isAuthenticated) {
       if (this.props.isSuperAdmin) {
         return (
-          <Redirect to='/frontend/admin/dashboard'/>
+          <Redirect to={this.redirectURL}/>
         );
       } else {
         return (

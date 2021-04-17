@@ -97,8 +97,10 @@ export const saveToLocalStorage = (itemName, st) => {
     const serialisedState = JSON.stringify(st);
     localStorage.setItem(itemName, serialisedState);
     console.log("localStorage(", itemName, ") = ", serialisedState)
+    console.log("OK?")
   } catch (e) {
-    console.warn(e);
+    console.log("NO")
+    console.log(e)
   }
 }
 

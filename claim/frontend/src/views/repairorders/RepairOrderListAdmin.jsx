@@ -16,12 +16,17 @@ import {connect} from "react-redux"
 import axios from 'axios'
 import Moment from 'moment';
 import { loadFromLocalStorage } from 'redux/reducers/auth'
+// import DateTime from "react-intl-datetime-format"
 
-class RepairOrderListAdmin extends Component {
+class RepairOrderList extends Component {
   state = {
     claims: []
   }
 
+  // claim_types = loadFromLocalStorage("claim_types")
+  // submission_types= loadFromLocalStorage("submission_types")
+  // service_advisors = loadFromLocalStorage("service_advisors")
+  // technicians = loadFromLocalStorage("technicians")
   token = loadFromLocalStorage("token");
   dealership = loadFromLocalStorage("user").dealership;
   headers = { 
@@ -29,23 +34,23 @@ class RepairOrderListAdmin extends Component {
   };
 
   componentDidMount() {
-    axios.get('/api/claim/claim/', {'headers': this.headers})
+    const path = this.props.pathname
+    const dealership = path.substring(path.lastIndexOf("/") + 1, path.length)
+    axios.get('/api/claim/claim/?dealership=' + dealership, {'headers': this.headers})
         .then(res => {
           const claims = res.data;
           this.setState({ claims });
         });
   }
 
-  handleDownloadPDF = (pdf, dealership) => {
-    axios.get('/api/claim/download_pdf?dealership=' + dealership + '&pdf=' + pdf, {'headers': this.headers})
+  handleDownloadPDF = pdf => {
+    axios.get('/api/claim/download_pdf?dealership=' + this.dealership + '&pdf=' + pdf, {'headers': this.headers})
       .then(res => {
         console.log("res = ", res)
         console.log("res.data.url = ", res.data.url)
         window.open(res.data.url, "_blank");
         console.log("download: OK");
       })
-
-
   }
 
   render() {
@@ -101,7 +106,7 @@ class RepairOrderListAdmin extends Component {
                           <td>{claim.service_advisor}</td>
                           <td>{claim.technician}</td>
                           <td>
-                            <Link onClick={() => this.handleDownloadPDF(claim.pdf.substring(claim.pdf.lastIndexOf("/")+1, claim.pdf.length), claim.dealership)}>
+                            <Link onClick={() => this.handleDownloadPDF(claim.pdf.substring(claim.pdf.lastIndexOf("/")+1, claim.pdf.length))}>
                               {claim.pdf.substring(claim.pdf.lastIndexOf("/")+1, claim.pdf.length)}                              
                             </Link>
                           </td>
@@ -122,4 +127,9 @@ class RepairOrderListAdmin extends Component {
   }
 }
 
-export default RepairOrderListAdmin;
+
+// export default RepairOrderList;
+const mapStateToProps = state => ({
+  pathname: state.router.location.pathname,
+});
+export default connect(mapStateToProps)(RepairOrderList);
