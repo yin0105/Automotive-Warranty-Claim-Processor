@@ -93,7 +93,7 @@ class Claim(models.Model):
     claim_type = models.ForeignKey(ClaimType, on_delete=models.CASCADE, verbose_name='claim type', null=True) 
     submission_type = models.ForeignKey(SubmissionType, on_delete=models.CASCADE, verbose_name='submission type', null=True) 
     upload_date = models.DateTimeField(null=True)
-    archieve = models.BooleanField(null=True)
+    archive = models.BooleanField(default=False)
 
     # Metadata
     class Meta:

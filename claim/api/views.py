@@ -147,14 +147,24 @@ def get_dealerships(request):
     return JsonResponse({'dealerships': serializer.data}, safe=False, status=status.HTTP_200_OK)   
 
 
+# @api_view(["GET"])
+# @csrf_exempt
+# # @permission_classes([IsAuthenticated])
+# def get_claim_by_dealership(request):
+#     dealerships = Dealership.objects.all()
+    
+#     serializer = DealershipSerializer(dealerships, many=True)
+#     return JsonResponse({'dealerships': serializer.data}, safe=False, status=status.HTTP_200_OK)  
+
+
 @api_view(["GET"])
 @csrf_exempt
 # @permission_classes([IsAuthenticated])
-def get_claim_by_dealership(request):
-    dealerships = Dealership.objects.all()
+def change_archive(request, claim_id):
+    print(request.GET["archive"])
+    claim = Claim.objects.filter(id=claim_id).update(archive=request.GET["archive"])
     
-    serializer = DealershipSerializer(dealerships, many=True)
-    return JsonResponse({'dealerships': serializer.data}, safe=False, status=status.HTTP_200_OK)                  
+    return JsonResponse({'response': 'ok'}, safe=False, status=status.HTTP_200_OK)                      
 
 
 # @api_view(["POST"])
@@ -236,7 +246,10 @@ class ClaimView(APIView):
         print([i for i in request.GET])
         posts = ""
         if "dealership" in request.GET :
-            posts = Claim.objects.filter(dealership = request.GET["dealership"])
+            if request.GET["dealership"] == "archive":
+                posts = Claim.objects.filter(archive = 1)
+            else:
+                posts = Claim.objects.filter(dealership = request.GET["dealership"], archive = 0)
         else:
             posts = Claim.objects.all()
         serializer = ClaimSerializer(posts, many=True)

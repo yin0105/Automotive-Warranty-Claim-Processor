@@ -7,9 +7,9 @@ import { loadFromLocalStorage } from 'redux/reducers/auth'
 
 var routes = [
   {
-    path: "/dashboard",
+    path: "/dashboard/archive",
     layout: "/frontend/admin",
-    name: "Dashboard",
+    name: "Archive Repair Order",
     icon: "pe-7s-graph",
     category: ["admin",],
     component: RepairOrderListAdmin
@@ -49,8 +49,9 @@ var routes = [
 ];
 
 const routes_head = loadFromLocalStorage('dealerships').map(d => ({
-  path: "/dashboard/?dealership=" + d.name,
+  path: "/dashboard/" + d.name,
   layout: "/frontend/admin",
+  key: d.name,
   name: d.name,
   icon: "pe-7s-graph",
   category: ["admin",],

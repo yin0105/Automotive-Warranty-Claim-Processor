@@ -8,6 +8,7 @@ import {
   OverlayTrigger,
   Tooltip,
   FormLabel,
+  FormCheck,
 } from "react-bootstrap";
 import { Link } from "react-router-dom"
 import Card from "components/Card/Card.jsx";
@@ -34,6 +35,10 @@ class RepairOrderList extends Component {
   };
 
   componentDidMount() {
+    this.getClaims();
+  }
+
+  getClaims = () => {
     const path = this.props.pathname
     const dealership = path.substring(path.lastIndexOf("/") + 1, path.length)
     axios.get('/api/claim/claim/?dealership=' + dealership, {'headers': this.headers})
@@ -52,6 +57,20 @@ class RepairOrderList extends Component {
         console.log("download: OK");
       })
   }
+
+  handleArchiveClick = (e, index, claim_id) => {
+    console.log("api url = ", '/api/claim/change_archive/' + claim_id + '?archive=' + (e.target.checked?'1':'0'))
+    axios.get('/api/claim/change_archive/' + claim_id + '?archive=' + (e.target.checked?'1':'0'), {'headers': this.headers})
+      .then(res => {
+        console.log("change archive : success")
+        this.getClaims()
+      }).catch(
+        console.log("change archive : false")        
+      )
+    const list = [...this.state.claims];
+    list[index]['archive'] = e.target.checked;
+    this.setState({claims: list});
+  };
 
   render() {
     const edit = <Tooltip id="edit">Edit Schedule</Tooltip>;
@@ -94,11 +113,12 @@ class RepairOrderList extends Component {
                         <th>Claim PDF</th>
                         <th>Uploaded Date</th>
                         <th>Dealership</th>
+                        <th>Archive/Complete</th>
                         {/* <th>Action</th> */}
                       </tr>
                     </thead>
                     <tbody>
-                      { this.state.claims.map(claim => 
+                      { this.state.claims.map((claim, i) => 
                         <tr>
                           <td>{claim.repair_order}</td>
                           <td>{claim.claim_type}</td>
@@ -112,6 +132,7 @@ class RepairOrderList extends Component {
                           </td>
                           <td>{Moment(claim.upload_date).format('MMMM Do YYYY, hh:mm:ss a')}</td>
                           <td>{claim.dealership}</td>
+                          <td><FormCheck checked={claim.archive} onClick={e => this.handleArchiveClick(e, i, claim.id)}/></td>
                           {/* {actions} */}
                         </tr>
                       )}

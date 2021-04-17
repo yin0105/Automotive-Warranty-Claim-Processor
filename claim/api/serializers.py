@@ -40,7 +40,7 @@ class ClaimSerializer(serializers.ModelSerializer):
     # upload_date = DateTimeField()
     class Meta:
         model = Claim
-        fields = ['id', 'repair_order', 'pdf', 'dealership', 'claim_type', 'submission_type', 'service_advisor', 'technician', 'archieve', 'upload_date']               
+        fields = ['id', 'repair_order', 'pdf', 'dealership', 'claim_type', 'submission_type', 'service_advisor', 'technician', 'archive', 'upload_date']               
 
 # class DealershipSerializer(serializers.ModelSerializer):
 #     class Meta:
