@@ -93,7 +93,8 @@ class LoginPage extends Component {
               console.log("res", res)
               saveToLocalStorage("dealerships", res.data.dealerships)
               console.log("rres.data.dealershipses", res.data.dealerships)
-              this.redirectURL = "/frontend/admin/dashboard/" + res.data.dealerships[0].name// + "/?dealership=" + res.data.dealerships[0].name
+              // this.redirectURL = "/frontend/admin/dashboard/" + res.data.dealerships[0].name
+              this.redirectURL = "/frontend/admin/dashboard/blank_dashboard"
               console.log("redirectURL = ", this.redirectURL)
             });
           await axios.get('/api/claim/get_submission_types', {headers})

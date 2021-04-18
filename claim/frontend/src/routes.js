@@ -48,7 +48,15 @@ export const routes = [
   },
 ];
 
-export const admin_routes = loadFromLocalStorage('dealerships')?.map(d => ({
+export const admin_routes = [{
+  path: "/dashboard/blank_dashboard",
+  layout: "/frontend/admin",
+  key: "blank_dashboard",
+  name: "Dashboard",
+  icon: "pe-7s-graph",
+  category: ["admin",],
+  component: RepairOrderListAdmin
+}].concat(loadFromLocalStorage('dealerships')?.map(d => ({
   path: "/dashboard/" + d.name,
   layout: "/frontend/admin",
   key: d.name,
@@ -56,5 +64,5 @@ export const admin_routes = loadFromLocalStorage('dealerships')?.map(d => ({
   icon: "pe-7s-graph",
   category: ["admin",],
   component: RepairOrderListAdmin
-})).concat(routes);
+}))).concat(routes);
 
